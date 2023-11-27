@@ -1,0 +1,78 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  width: 60%;
+  margin: 0 auto;
+  padding: 3rem;
+}
+a{
+  color: black;
+  text-decoration: none;
+}
+.header__container{
+  padding: 2rem 1rem;
+
+}
+
+.header-nav{
+  display: flex;
+  justify-content: space-between;
+  background: whitesmoke;
+  align-items: center;
+}
+
+.header__logo{
+  display: flex;
+  align-items: center;
+}
+
+/* ----------------------------- */
+
+.hero__container{
+  padding: 1rem 1rem;
+  background-color: #F8F9FF;
+}
+
+.button-area{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2rem;
+  align-items: center;
+  
+}
+
+/* ------------------------- */
+.task__container{
+  padding: 1rem 1rem;
+  background-color: #F8F9FF;
+}
+
+.task__card{
+  background-color: azure;
+  height: auto;
+  width: 200px;
+  padding: 1rem 2rem;
+}
+
+.todo__card {
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+
+}
+
+.todo , p{
+background-color: #FFFFFF;
+height: auto;
+padding: 4rem 1rem;
+text-align: center;
+font-size: xx-large;
+border: 1px solid gray;
+
+}

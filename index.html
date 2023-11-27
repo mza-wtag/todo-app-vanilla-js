@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/styles/style.css" />
+        <title>ToDo App</title>
+    </head>
+    <body>
+        <header class="header">
+            <div class="header__container">
+                <nav class="header-nav">
+                    <div class="header__logo">
+                        <div class="header__logo-img">
+                            <img src="/images/leaf 1.png" alt="leaf" />
+                        </div>
+                        <div class="header__logo-text">ToDos</div>
+                    </div>
+                    <div class="header__search-input">
+                        <input type="text" placeholder="search todo" />
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <section class="hero">
+            <div class="hero__container">
+                <h1>Add Tasks</h1>
+                <div class="button-area">
+                    <div class="button-area--left">
+                        <button class="button_create">Create</button>
+                    </div>
+                    <div class="button-area--right">
+                        <button class="button-right-all">All</button>
+                        <button class="button-right-incomplete">
+                            Incomplete
+                        </button>
+                        <button class="button-right-complete">Complete</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="task">
+            <div class="task__container">
+                <div class="task__card">
+                    <input type="text" class="task__input" id="inputField" />
+                    <button class="task__button-add" id="addToDo">
+                        Add Task
+                    </button>
+                    <button class="task__button-delete">Delete Task</button>
+                </div>
+                <div class="todo__card" id="toDoContainer"></div>
+            </div>
+        </section>
+        <script src="/script/app.js"></script>
+    </body>
+</html>
