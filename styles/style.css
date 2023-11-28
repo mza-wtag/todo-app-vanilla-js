@@ -62,7 +62,7 @@ a{
   display: none;
 }
 
-.todo__card {
+.todo__container {
   display: grid;
   height: auto;
   grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
