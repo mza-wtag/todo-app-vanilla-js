@@ -18,13 +18,13 @@ deleteTask.addEventListener("click", function () {
 let todos = [];
 
 function renderTodos() {
-    const todoList = document.getElementById("todo-list");
+    const todoList = document.getElementById("task__todo-list");
     todoList.innerHTML = "";
 
     todos.forEach((todo, index) => {
         const div = document.createElement("div");
         div.innerHTML = `
-        <div class="todo__items">
+        <div class="task__todo__items">
         <h1>${todo.text}</h1>
         <button onclick="completeTodo(${index})">complete</button>
         <button onclick="editTodo(${index})">Edit</button>
