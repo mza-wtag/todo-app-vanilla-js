@@ -30,7 +30,6 @@ function renderTodos() {
         <button onclick="editTodo(${index})">Edit</button>
         <button onclick="deleteTodo(${index})">Delete</button>
         </div>
-       
       `;
         todoList.appendChild(div);
     });
@@ -44,7 +43,6 @@ function addTodo() {
         const newTodo = {
             text: todoText,
         };
-
         todos.push(newTodo);
         todoInput.value = "";
         renderTodos();
