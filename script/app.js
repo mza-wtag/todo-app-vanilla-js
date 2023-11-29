@@ -1,7 +1,7 @@
 let addToDoButton = document.querySelector(".task__button-add");
 let toDoContainer = document.querySelector(".todo__container");
 let inputField = document.querySelector(".task__input");
-let createTask = document.querySelector(".button_create");
+let createTask = document.querySelector(".button-create");
 let deleteTask = document.querySelector(".task__button-delete");
 let taskCard = document.querySelector(".task__card");
 
