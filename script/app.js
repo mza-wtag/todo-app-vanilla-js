@@ -48,3 +48,10 @@ function addTodo() {
         renderTodos();
     }
 }
+
+function deleteTodo(index) {
+    if (confirm("Are you sure you want to delete this todo?")) {
+        todos.splice(index, 1);
+        renderTodos();
+    }
+}
