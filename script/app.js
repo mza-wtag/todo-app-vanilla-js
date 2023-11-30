@@ -1,9 +1,10 @@
 let addToDoButton = document.querySelector(".task__button-add");
 let toDoContainer = document.querySelector(".todo__container");
-let inputField = document.querySelector(".task__input");
-let createTask = document.querySelector(".button-create");
+let createTask = document.querySelector(".hero__button-create");
+let todoInput = document.querySelector(".task__input");
 let deleteTask = document.querySelector(".task__button-delete");
 let taskCard = document.querySelector(".task__card");
+let todoList = document.querySelector(".task__todo-list");
 
 createTask.addEventListener("click", function () {
     if (!taskCard.style.display || taskCard.style.display === "none") {
@@ -18,16 +19,19 @@ deleteTask.addEventListener("click", function () {
 let todos = [];
 
 function renderTodos() {
-    const todoList = document.getElementById("task__todo-list");
     todoList.innerHTML = "";
 
     todos.forEach((todo, index) => {
         const div = document.createElement("div");
         div.innerHTML = `
         <div class="task__todo__items">
-        <h1>${todo.text}</h1>
-        <button onclick="completeTodo(${index})">complete</button>
-        <button onclick="editTodo(${index})">Edit</button>
+        <h1 class="${todo.completed ? "completed" : ""}">${todo.text}</h1>
+      <button onclick="toggleComplete(${index})">${
+            todo.completed ? "" : "Complete"
+        }</button>
+        <button onclick="editTodo(${index})">${
+            todo.completed ? "" : "Edit"
+        }</button>
         <button onclick="deleteTodo(${index})">Delete</button>
         </div>
       `;
@@ -36,12 +40,12 @@ function renderTodos() {
 }
 
 function addTodo() {
-    const todoInput = document.getElementById("inputField");
     const todoText = todoInput.value.trim();
 
     if (todoText !== "") {
         const newTodo = {
             text: todoText,
+            completed: false,
         };
         todos.push(newTodo);
         todoInput.value = "";
@@ -54,4 +58,9 @@ function deleteTodo(index) {
         todos.splice(index, 1);
         renderTodos();
     }
+}
+
+function toggleComplete(index) {
+    todos[index].completed = !todos[index].completed;
+    renderTodos();
 }

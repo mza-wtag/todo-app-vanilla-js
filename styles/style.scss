@@ -61,7 +61,7 @@ a {
     border: 1px solid gray;
     display: none;
   }
-  #task__todo-list {
+  &__todo-list {
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
     gap: 1rem 2rem;
@@ -76,3 +76,7 @@ a {
   }
 }
   
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
