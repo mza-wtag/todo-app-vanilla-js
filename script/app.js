@@ -20,18 +20,20 @@ let todos = [];
 
 function renderTodos() {
     todoList.innerHTML = "";
-
     todos.forEach((todo, index) => {
         const div = document.createElement("div");
+        div.className = todo.completed ? "complete" : "";
         div.innerHTML = `
-        <div class="task__todo__items">
-        <h1 class="${todo.completed ? "completed" : ""}">${todo.text}</h1>
-      <button onclick="toggleComplete(${index})">${
-            todo.completed ? "" : "Complete"
-        }</button>
-        <button onclick="editTodo(${index})">${
-            todo.completed ? "" : "Edit"
-        }</button>
+        <div class="task__todo-items">
+        <h1 class="${
+            todo.completed ? "task__todo-title--completed" : "task__todo-title"
+        }">${todo.text}</h1>
+        <button onclick="completeTodo(${index})" ${
+            todo.completed ? "disabled" : ""
+        }>Complete</button>
+        <button  onclick="editTodo(${index})" ${
+            todo.completed ? "disabled" : ""
+        }>Edit</button>
         <button onclick="deleteTodo(${index})">Delete</button>
         </div>
       `;
@@ -60,7 +62,7 @@ function deleteTodo(index) {
     }
 }
 
-function toggleComplete(index) {
-    todos[index].completed = !todos[index].completed;
+function completeTodo(index) {
+    todos[index].completed = true;
     renderTodos();
 }
