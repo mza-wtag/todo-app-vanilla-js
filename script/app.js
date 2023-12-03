@@ -17,30 +17,48 @@ hideTask.addEventListener("click", function () {
     taskCard.style.display = "none";
 });
 
-let todos = [];
-function renderTodos() {
-    todos.forEach((todo, index) => {
-        let div = document.createElement("div");
-        div.classList.add("task__card-new");
-        div.innerHTML = `
-        <h1>${todo.text}</h1>
-        <button onclick="completeTodo(${index})">complete</button>
-        <button onclick="editTodo(${index})">Edit</button>
-        <button onclick="deleteTodo(${index})">Delete</button>
-      `;
-        taskContainer.appendChild(div);
-    });
+const todos = [];
+
+function generateUniqueId() {
+    return new Date().getTime();
+}
+function sanitizeInput(input) {
+    const maxLength = 100;
+    const sanitizedInput = input.replace(/<\/?[^>]+(>|$)/g, "");
+    return sanitizedInput.substring(0, maxLength);
 }
 
-function addTodo() {
-    const todoText = todoInput.value.trim();
-
-    if (todoText !== "") {
-        const newTodo = {
-            text: todoText,
-        };
-        todos.push(newTodo);
-        todoInput.value = "";
-        renderTodos();
+function insertTask() {
+    const titleInput = sanitizeInput(todoInput.value.trim());
+    if (!titleInput) {
+        alert("Please enter a valid task title.");
+        return;
     }
+    todos.unshift({
+        id: generateUniqueId(),
+        title: titleInput,
+        isCompleted: false,
+        createdAt: new Date().toISOString(),
+    });
+    pushToDOM(todos[0]);
+}
+
+function getTaskNode(task) {
+    const div = document.createElement("div");
+    div.classList.add("task__card-new");
+    div.setAttribute("id", `taskId-${task.id}`);
+    div.innerHTML = `
+        <h1>${task.title}</h1>
+        <p> ${task.createdAt}</p>
+        <button onclick="completeTodo(${task.id})">complete</button>
+        <button onclick="editTodo(${task.id})">Edit</button>
+        <button onclick="deleteTodo(${task.id})">Delete</button>
+      `;
+    return div;
+}
+
+function pushToDOM(task) {
+    const taskInput = document.getElementById("task-input");
+    taskInput.after(getTaskNode(task));
+    todoInput.value = "";
 }
