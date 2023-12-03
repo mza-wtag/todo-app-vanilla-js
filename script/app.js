@@ -63,9 +63,16 @@ function pushToDOM(task) {
     todoInput.value = "";
 }
 
-function deleteTodo(index) {
-    if (confirm("Are you sure you want to delete this todo?")) {
+function deleteTodo(id) {
+    const index = todos.findIndex((task) => task.id === id);
+
+    if (index !== -1) {
+        confirm("Are you sure you want to delete this todo?");
         todos.splice(index, 1);
-        renderTodos();
+
+        const taskNode = document.getElementById(`taskId-${id}`);
+        if (taskNode) {
+            taskNode.remove();
+        }
     }
 }
