@@ -3,18 +3,16 @@ let toDoContainer = document.querySelector(".todo__container");
 let todoInput = document.querySelector(".task__input");
 let createTask = document.querySelector(".task-board__button-create");
 let taskCardNew = document.querySelector(".task__card-new");
-let hideTask = document.querySelector(".task__button-hide");
 let taskContainer = document.querySelector(".task__container");
 let taskCard = document.querySelector(".task__card");
 
 createTask.addEventListener("click", function () {
-    if (!taskCard.style.display || taskCard.style.display === "none") {
-        taskCard.style.display = "block";
-    }
-});
-
-hideTask.addEventListener("click", function () {
-    taskCard.style.display = "none";
+    taskCard.style.display =
+        taskCard.style.display === "none" || !taskCard.style.display
+            ? "block"
+            : "none";
+    createTask.innerText =
+        taskCard.style.display === "none" ? "Create Task" : "Hide Task";
 });
 
 const todos = [];
@@ -28,7 +26,7 @@ function sanitizeInput(input) {
     return sanitizedInput.substring(0, maxLength);
 }
 
-function insertTask() {
+function addTask() {
     const titleInput = sanitizeInput(todoInput.value.trim());
     if (!titleInput) {
         alert("Please enter a valid task title.");
@@ -38,7 +36,14 @@ function insertTask() {
         id: generateUniqueId(),
         title: titleInput,
         isCompleted: false,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date()
+            .toLocaleDateString("pt-br", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+            })
+            .split("/")
+            .join("."),
     });
     pushToDOM(todos[0]);
 }
@@ -49,7 +54,7 @@ function getTaskNode(task) {
     div.setAttribute("id", `taskId-${task.id}`);
     div.innerHTML = `
         <h1>${task.title}</h1>
-        <p> ${task.createdAt}</p>
+        <p>Created At: ${task.createdAt}</p>
         <button onclick="completeTodo(${task.id})">complete</button>
         <button onclick="editTodo(${task.id})">Edit</button>
         <button onclick="deleteTodo(${task.id})">Delete</button>
