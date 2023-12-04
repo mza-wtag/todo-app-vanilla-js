@@ -1,68 +1,106 @@
 let addToDoButton = document.querySelector(".task__button-add");
 let toDoContainer = document.querySelector(".todo__container");
-let createTask = document.querySelector(".hero__button-create");
 let todoInput = document.querySelector(".task__input");
-let deleteTask = document.querySelector(".task__button-delete");
+let createTask = document.querySelector(".task-board__button-create");
+let taskCardNew = document.querySelector(".task__card-new");
+let taskContainer = document.querySelector(".task__container");
 let taskCard = document.querySelector(".task__card");
 let todoList = document.querySelector(".task__todo-list");
 
 createTask.addEventListener("click", function () {
-    if (!taskCard.style.display || taskCard.style.display === "none") {
-        taskCard.style.display = "block";
+    taskCard.style.display =
+        taskCard.style.display === "none" || !taskCard.style.display
+            ? "block"
+            : "none";
+    createTask.innerText =
+        taskCard.style.display === "none" ? "Create Task" : "Hide Task";
+});
+
+const todos = [];
+
+function generateUniqueId() {
+    return new Date().getTime();
+}
+function sanitizeInput(input) {
+    const maxLength = 100;
+    const sanitizedInput = input.replace(/<\/?[^>]+(>|$)/g, "");
+    return sanitizedInput.substring(0, maxLength);
+}
+
+function addTask() {
+    const titleInput = sanitizeInput(todoInput.value.trim());
+    if (!titleInput) {
+        alert("Please enter a valid task title.");
+        return;
     }
-});
-
-deleteTask.addEventListener("click", function () {
-    taskCard.style.display = "none";
-});
-
-let todos = [];
-
-function renderTodos() {
-    todoList.innerHTML = "";
-    todos.forEach((todo, index) => {
-        const div = document.createElement("div");
-        div.className = todo.completed ? "complete" : "";
-        div.innerHTML = `
-        <div class="task__todo-items">
-        <h1 class="${
-            todo.completed ? "task__todo-title--completed" : "task__todo-title"
-        }">${todo.text}</h1>
-        <button onclick="completeTodo(${index})" ${
-            todo.completed ? "disabled" : ""
-        }>Complete</button>
-        <button  onclick="editTodo(${index})" ${
-            todo.completed ? "disabled" : ""
-        }>Edit</button>
-        <button onclick="deleteTodo(${index})">Delete</button>
-        </div>
-      `;
-        todoList.appendChild(div);
+    todos.unshift({
+        id: generateUniqueId(),
+        title: titleInput,
+        isCompleted: false,
+        createdAt: new Date()
+            .toLocaleDateString("pt-br", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "2-digit",
+            })
+            .split("/")
+            .join("."),
     });
+    pushToDOM(todos[0]);
 }
 
-function addTodo() {
-    const todoText = todoInput.value.trim();
+function getTaskNode(task) {
+    const div = document.createElement("div");
+    div.classList.add("task__card-new");
+    div.setAttribute("id", `taskId-${task.id}`);
+    div.innerHTML = `
+        <h1>${task.title}</h1>
+        <p>Created At: ${task.createdAt}</p>
+        <button onclick="completeTask(${task.id})">complete</button>
+        <button onclick="editTodo(${task.id})">Edit</button>
+        <button onclick="deleteTask(${task.id})">Delete</button>
+      `;
+    return div;
+}
 
-    if (todoText !== "") {
-        const newTodo = {
-            text: todoText,
-            completed: false,
-        };
-        todos.push(newTodo);
-        todoInput.value = "";
-        renderTodos();
+function pushToDOM(task) {
+    const taskInput = document.getElementById("task-input");
+    taskInput.after(getTaskNode(task));
+    todoInput.value = "";
+}
+
+function deleteTask(id) {
+    const userConfirmed = confirm("Are you sure you want to delete this task?");
+    if (userConfirmed) {
+        const index = todos.findIndex((task) => task.id === id);
+
+        if (index !== -1) {
+            todos.splice(index, 1);
+            const taskNode = document.getElementById(`taskId-${id}`);
+            if (taskNode) {
+                taskNode.remove();
+            }
+        }
     }
 }
 
-function deleteTodo(index) {
-    if (confirm("Are you sure you want to delete this todo?")) {
-        todos.splice(index, 1);
-        renderTodos();
+function completeTask(id) {
+    const task = todos.find((task) => task.id === id);
+
+    if (task) {
+        task.isCompleted = true;
+        updateTaskDOM(task);
     }
 }
 
-function completeTodo(index) {
-    todos[index].completed = true;
-    renderTodos();
+function updateTaskDOM(task) {
+    const taskNode = document.getElementById(`taskId-${task.id}`);
+    if (taskNode) {
+        taskNode.innerHTML = `
+<h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+<button onclick="completeTask(${task.id})">Complete</button>
+<button onclick="editTodo(${task.id})">Edit</button>
+<button onclick="deleteTask(${task.id})">Delete</button>
+`;
+    }
 }

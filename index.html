@@ -22,31 +22,35 @@
                 </nav>
             </div>
         </header>
-        <section class="hero">
-            <div class="hero__container">
-                <h1 class="hero__title">Add Tasks</h1>
-                <div class="hero__button-area">
-                    <div class="hero__button-area-left">
-                        <button class="hero__button-create">Create</button>
+        <section class="task-board">
+            <div class="task-board__container">
+                <h1 class="task-board__title">Add Tasks</h1>
+                <div class="task-board__button-area">
+                    <div class="task-board__button-area-left">
+                        <button class="task-board__button-create">
+                            Create Task
+                        </button>
                     </div>
-                    <div class="hero__button-area-right">
-                        <button class="hero__button-filter">All</button>
-                        <button class="hero__button-filter">Incomplete</button>
-                        <button class="hero__button-filter">Complete</button>
+                    <div class="task-board__button-area-right">
+                        <button class="task-board__button-filter">All</button>
+                        <button class="task-board__button-filter">
+                            Incomplete
+                        </button>
+                        <button class="task-board__button-filter">
+                            Complete
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
         <section class="task">
             <div class="task__container">
-                <div class="task__card">
+                <div id="task-input" class="task__card">
                     <input type="text" class="task__input" />
-                    <button onclick="addTodo()" class="task__button-add">
+                    <button onclick="addTask()" class="task__button-add">
                         Add Task
                     </button>
-                    <button class="task__button-delete">Delete Task</button>
                 </div>
-                <div class="task__todo-list"></div>
             </div>
         </section>
         <script src="/script/app.js"></script>
