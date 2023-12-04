@@ -50,9 +50,9 @@ function getTaskNode(task) {
     div.innerHTML = `
         <h1>${task.title}</h1>
         <p> ${task.createdAt}</p>
-        <button onclick="completeTodo(${task.id})">complete</button>
+        <button onclick="completeTask(${task.id})">complete</button>
         <button onclick="editTodo(${task.id})">Edit</button>
-        <button onclick="deleteTodo(${task.id})">Delete</button>
+        <button onclick="deleteTask(${task.id})">Delete</button>
       `;
     return div;
 }
@@ -63,16 +63,17 @@ function pushToDOM(task) {
     todoInput.value = "";
 }
 
-function deleteTodo(id) {
-    const index = todos.findIndex((task) => task.id === id);
+function deleteTask(id) {
+    const userConfirmed = confirm("Are you sure you want to delete this task?");
+    if (userConfirmed) {
+        const index = todos.findIndex((task) => task.id === id);
 
-    if (index !== -1) {
-        confirm("Are you sure you want to delete this todo?");
-        todos.splice(index, 1);
-
-        const taskNode = document.getElementById(`taskId-${id}`);
-        if (taskNode) {
-            taskNode.remove();
+        if (index !== -1) {
+            todos.splice(index, 1);
+            const taskNode = document.getElementById(`taskId-${id}`);
+            if (taskNode) {
+                taskNode.remove();
+            }
         }
     }
 }
