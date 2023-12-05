@@ -99,8 +99,12 @@ function updateTaskDOM(task) {
         taskNode.innerHTML = `
 <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
 <p>Created At: ${task.createdAt}</p>
-<button onclick="completeTask(${task.id})">Complete</button>
-<button onclick="editTodo(${task.id})">Edit</button>
+${
+    !task.isCompleted
+        ? `<button onclick="completeTask(${task.id})">Complete</button>
+<button onclick="editTodo(${task.id})">Edit</button>`
+        : ""
+}
 <button onclick="deleteTask(${task.id})">Delete</button>
 <p>Completed in: ${task.createdAt}</p>
 `;
