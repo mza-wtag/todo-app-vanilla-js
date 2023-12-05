@@ -1,13 +1,13 @@
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 body {
-    width: 60%;
     margin: 0 auto;
     padding: 3rem;
+    width: 60%;
 }
 
 a {
@@ -21,54 +21,54 @@ a {
     }
 
     &__nav {
+        align-items: center;
+        background: whitesmoke;
         display: flex;
         justify-content: space-between;
-        background: whitesmoke;
-        align-items: center;
     }
 
     &__logo {
-        display: flex;
         align-items: center;
+        display: flex;
     }
 }
 
 .task-board {
     &__container {
-        padding: 1rem 1rem;
         background-color: #f8f9ff;
+        padding: 1rem;
     }
     &__button-area {
+        align-items: center;
         display: flex;
         justify-content: space-between;
         padding-top: 2rem;
-        align-items: center;
     }
 }
 
 .task {
     &__container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1rem 2rem;
-        padding: 1rem 1rem;
         background-color: #f8f9ff;
+        display: grid;
+        gap: 1rem 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        padding: 1rem 1rem;
     }
     &__card {
         background-color: #ffffff;
-        height: auto;
-        padding: 4rem 1rem;
-        margin-bottom: 1rem;
-        text-align: center;
         border: 1px solid gray;
         display: none;
+        height: auto;
+        margin-bottom: 1rem;
+        padding: 4rem 1rem;
+        text-align: center;
     }
     &__card-new {
         background-color: #ffffff;
-        height: auto;
-        padding: 4rem 1rem;
-        margin-bottom: 1rem;
-        text-align: center;
         border: 1px solid gray;
+        height: auto;
+        margin-bottom: 1rem;
+        padding: 4rem 1rem;
+        text-align: center;
     }
 }
