@@ -1,7 +1,7 @@
 let addToDoButton = document.querySelector(".task__button-add");
 let toDoContainer = document.querySelector(".todo__container");
 let todoInput = document.querySelector(".task__input");
-let createTask = document.querySelector(".task-board__button-create");
+let createTask = document.querySelector(".task-board__button--create");
 let taskCardNew = document.querySelector(".task__card-new");
 let taskContainer = document.querySelector(".task__container");
 let taskCard = document.querySelector(".task__card");
@@ -12,7 +12,7 @@ createTask.addEventListener("click", function () {
             ? "block"
             : "none";
     createTask.innerText =
-        taskCard.style.display === "none" ? "Create Task" : "Hide Task";
+        taskCard.style.display === "none" ? "+Create Task" : "Hide Task";
 });
 
 const todos = [];
