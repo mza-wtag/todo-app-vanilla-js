@@ -1,19 +1,6 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    margin: 0 auto;
-    padding: 3rem;
-    width: 60%;
-}
-
-a {
-    color: black;
-    text-decoration: none;
-}
+@use "variables";
+@use "base";
+@use "layout";
 
 .header {
     &__container {
@@ -22,7 +9,7 @@ a {
 
     &__nav {
         align-items: center;
-        background: whitesmoke;
+        background: variables.$secondary-color;
         display: flex;
         justify-content: space-between;
     }
@@ -35,7 +22,7 @@ a {
 
 .task-board {
     &__container {
-        background-color: #f8f9ff;
+        background-color: variables.$primary-color;
         padding: 1rem;
     }
     &__button-area {
@@ -48,24 +35,17 @@ a {
 
 .task {
     &__container {
-        background-color: #f8f9ff;
+        background-color: variables.$primary-color;
         display: grid;
         gap: 1rem 2rem;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         padding: 1rem 1rem;
     }
-    &__card {
-        background-color: #ffffff;
-        border: 1px solid gray;
-        display: none;
-        height: auto;
-        margin-bottom: 1rem;
-        padding: 4rem 1rem;
-        text-align: center;
-    }
+    &__card,
     &__card-new {
-        background-color: #ffffff;
-        border: 1px solid gray;
+        background-color: variables.$secondary-color;
+        border-radius: 5px;
+        border: 1px solid variables.$border-color;
         height: auto;
         margin-bottom: 1rem;
         padding: 4rem 1rem;
