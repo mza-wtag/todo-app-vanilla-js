@@ -50,7 +50,16 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         padding: 1rem 1rem;
     }
-    &__card,
+    &__card {
+        background-color: variables.$color-white;
+        border-radius: 5px;
+        border: 1px solid variables.$border-color;
+        display: none;
+        height: auto;
+        margin-bottom: 1rem;
+        padding: 4rem 1rem;
+        text-align: center;
+    }
     &__card-new {
         background-color: variables.$color-white;
         border-radius: 5px;
