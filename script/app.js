@@ -5,7 +5,6 @@ let createTask = document.querySelector(".task-board__button--create");
 let taskCardNew = document.querySelector(".task__card-new");
 let taskContainer = document.querySelector(".task__container");
 let taskCard = document.querySelector(".task__card");
-let todoList = document.querySelector(".task__todo-list");
 
 createTask.addEventListener("click", function () {
     taskCard.style.display =
