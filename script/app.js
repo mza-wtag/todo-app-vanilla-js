@@ -5,6 +5,7 @@ let createTask = document.querySelector(".task-board__button--create");
 let taskCardNew = document.querySelector(".task__card-new");
 let taskContainer = document.querySelector(".task__container");
 let taskCard = document.querySelector(".task__card");
+let todoList = document.querySelector(".task__todo-list");
 
 createTask.addEventListener("click", function () {
     taskCard.style.display =
@@ -12,7 +13,7 @@ createTask.addEventListener("click", function () {
             ? "block"
             : "none";
     createTask.innerText =
-        taskCard.style.display === "none" ? "+Create Task" : "Hide Task";
+        taskCard.style.display === "none" ? "Create Task" : "Hide Task";
 });
 
 const todos = [];
@@ -53,12 +54,12 @@ function getTaskNode(task) {
     div.classList.add("task__card-new");
     div.setAttribute("id", `taskId-${task.id}`);
     div.innerHTML = `
-        <h1>${task.title}</h1>
-        <p>Created At: ${task.createdAt}</p>
-        <button onclick="completeTask(${task.id})">complete</button>
-        <button onclick="editTodo(${task.id})">Edit</button>
-        <button onclick="deleteTask(${task.id})">Delete</button>
-      `;
+<h1>${task.title}</h1>
+<p>Created At: ${task.createdAt}</p>
+<button onclick="completeTask(${task.id})">Complete</button>
+<button onclick="editTask(${task.id})">Edit</button>
+<button onclick="deleteTask(${task.id})">Delete</button>
+`;
     return div;
 }
 
@@ -92,20 +93,51 @@ function completeTask(id) {
     }
 }
 
+function editTask(id) {
+    const task = todos.find((task) => task.id === id);
+
+    if (task) {
+        const taskNode = document.getElementById(`taskId-${id}`);
+        if (taskNode) {
+            const titleElement = taskNode.querySelector("h1");
+            const editButton = taskNode.querySelector("button:nth-child(4)");
+
+            const originalTitle = task.title;
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.value = originalTitle;
+
+            titleElement.replaceWith(newInput);
+            editButton.innerText = "Save";
+
+            editButton.onclick = function () {
+                const updatedTitle = newInput.value.trim();
+                if (updatedTitle) {
+                    task.title = updatedTitle;
+                    updateTaskDOM(task);
+                } else {
+                    alert("Please enter a valid task title.");
+                }
+            };
+        }
+    }
+}
+
 function updateTaskDOM(task) {
     const taskNode = document.getElementById(`taskId-${task.id}`);
     if (taskNode) {
         taskNode.innerHTML = `
-<h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-<p>Created At: ${task.createdAt}</p>
-${
-    !task.isCompleted
-        ? `<button onclick="completeTask(${task.id})">Complete</button>
-<button onclick="editTodo(${task.id})">Edit</button>`
-        : ""
-}
-<button onclick="deleteTask(${task.id})">Delete</button>
-<p>Completed in: ${task.createdAt}</p>
-`;
+     <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+     <p>Created At: ${task.createdAt}</p>
+         ${
+             !task.isCompleted
+                 ? `<button onclick="completeTask(${task.id})">Complete</button>
+                              <button onclick="editTask(${task.id})">Edit</button>
+                             `
+                 : ""
+         }
+      <button onclick="deleteTask(${task.id})">Delete</button>
+      <p>Completed in: ${task.createdAt}</p>
+                            `;
     }
 }
