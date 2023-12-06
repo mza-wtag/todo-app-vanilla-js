@@ -110,3 +110,33 @@ function updateTaskDOM(task) {
                             `;
     }
 }
+
+function editTask(id) {
+    const task = todos.find((task) => task.id === id);
+
+    if (task) {
+        const taskNode = document.getElementById(`taskId-${id}`);
+        if (taskNode) {
+            const titleElement = taskNode.querySelector("h1");
+            const editButton = taskNode.querySelector("button:nth-child(4)");
+
+            const originalTitle = task.title;
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.value = originalTitle;
+
+            titleElement.replaceWith(newInput);
+            editButton.innerText = "Save";
+
+            editButton.onclick = function () {
+                const updatedTitle = newInput.value.trim();
+                if (updatedTitle) {
+                    task.title = updatedTitle;
+                    updateTaskDOM(task);
+                } else {
+                    alert("Please enter a valid task title.");
+                }
+            };
+        }
+    }
+}
