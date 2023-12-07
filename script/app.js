@@ -1,4 +1,4 @@
-import { sanitizeInput, generateUniqueId } from "./helpers.js";
+import { sanitizeInput, generateUniqueId, formatDate } from "./helpers.js";
 import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
 
 const todos = [];
@@ -26,14 +26,7 @@ function addTask() {
         id: generateUniqueId(),
         title: titleInput,
         isCompleted: false,
-        createdAt: new Date()
-            .toLocaleDateString("pt-br", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-            })
-            .split("/")
-            .join("."),
+        createdAt: formatDate(),
     });
     pushToDOM(todos[0]);
 }
