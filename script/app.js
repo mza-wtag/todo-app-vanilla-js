@@ -47,8 +47,12 @@ function getTaskNode(task) {
         <p>Created At: ${task.createdAt}</p>
         <button >Complete</button>
         <button >Edit</button>
-        <button >Delete</button>
+        <button class="common-button common-button--delete">Delete</button>
       `;
+    div.querySelector(".common-button--delete").addEventListener("click", () =>
+        deleteTask(task.id)
+    );
+
     return div;
 }
 
