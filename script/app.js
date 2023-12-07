@@ -87,11 +87,55 @@ function deleteTask(id) {
     }
 }
 
+// function completeTask(id) {
+//     const task = todos.find((task) => task.id === id);
+
+//     if (task) {
+//         task.isCompleted = true;
+//         updateTaskDOM(task);
+//     }
+// }
+
+// function updateTaskDOM(task) {
+//     const taskNode = document.getElementById(`taskId-${task.id}`);
+//     if (taskNode) {
+//         taskNode.innerHTML = `
+//             <h1 class="${task.isCompleted ? "completed" : ""}">${
+//             task.title
+//         }</h1>
+//             <p>Created At: ${task.createdAt}</p>
+//             ${
+//                 !task.isCompleted
+//                     ? `<button class="common-button common-button--complete">Complete</button>`
+//                     : ""
+//             }
+//             <button class="common-button common-button--delete">Delete</button>
+//             <p>${task.isCompleted ? `Completed in: ` : ""}</p>
+//         `;
+
+//         const completeButton = taskNode.querySelector(
+//             ".common-button--complete"
+//         );
+//         const deleteButton = taskNode.querySelector(".common-button--delete");
+
+//         if (completeButton) {
+//             completeButton.addEventListener("click", () =>
+//                 completeTask(task.id)
+//             );
+//         }
+
+//         if (deleteButton) {
+//             deleteButton.addEventListener("click", () => deleteTask(task.id));
+//         }
+//     }
+// }
 function completeTask(id) {
     const task = todos.find((task) => task.id === id);
 
-    if (task) {
+    if (task && !task.isCompleted) {
         task.isCompleted = true;
+        task.completedAt = new Date();
+        task.completedInDays = calculateDays(task.createdAt, task.completedAt);
         updateTaskDOM(task);
     }
 }
@@ -99,6 +143,10 @@ function completeTask(id) {
 function updateTaskDOM(task) {
     const taskNode = document.getElementById(`taskId-${task.id}`);
     if (taskNode) {
+        const completedDays = task.completedAt
+            ? `Completed in: ${task.completedInDays} days`
+            : "";
+
         taskNode.innerHTML = `
             <h1 class="${task.isCompleted ? "completed" : ""}">${
             task.title
@@ -110,7 +158,7 @@ function updateTaskDOM(task) {
                     : ""
             }
             <button class="common-button common-button--delete">Delete</button>
-            <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
+            <p>${completedDays}</p>
         `;
 
         const completeButton = taskNode.querySelector(
@@ -128,4 +176,11 @@ function updateTaskDOM(task) {
             deleteButton.addEventListener("click", () => deleteTask(task.id));
         }
     }
+}
+
+function calculateDays(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffInMilliseconds = Math.abs(end - start);
+    return Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24 * 24 * 24));
 }
