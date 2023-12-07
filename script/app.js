@@ -1,4 +1,6 @@
-import { sanitizeInput, generateUniqueId, formatDate } from "./helpers.js";
+import { sanitizeInput } from "./helpers/sanitizeInput.js";
+import { generateUniqueId } from "./helpers/generateUniqueId.js";
+import { formatDate } from "./helpers/formatDate.js";
 import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
 
 const todos = [];
