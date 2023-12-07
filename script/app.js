@@ -44,7 +44,7 @@ function getTaskNode(task) {
         ${
             !task.isCompleted
                 ? `<button class="common-button common-button--complete">Complete</button>
-                   <button class="common-button">Edit</button>`
+                   <button class="common-button common-button--edit">Edit</button>`
                 : ""
         }
         <button class="common-button common-button--delete">Delete</button>
@@ -57,6 +57,9 @@ function getTaskNode(task) {
     }
     div.querySelector(".common-button--delete").addEventListener("click", () =>
         deleteTask(task.id)
+    );
+    div.querySelector(".common-button--edit").addEventListener("click", () =>
+        editTask(task.id)
     );
 
     return div;
@@ -110,7 +113,8 @@ function updateTaskDOM(task) {
             <p>Created At: ${task.createdAt}</p>
             ${
                 !task.isCompleted
-                    ? `<button class="common-button common-button--complete">Complete</button>`
+                    ? `<button class="common-button common-button--complete">Complete</button>
+                       <button class="common-button common-button--edit">Edit</button>`
                     : ""
             }
             <button class="common-button common-button--delete">Delete</button>
@@ -120,12 +124,17 @@ function updateTaskDOM(task) {
         const completeButton = taskNode.querySelector(
             ".common-button--complete"
         );
+        const editButton = taskNode.querySelector(".common-button--edit");
         const deleteButton = taskNode.querySelector(".common-button--delete");
 
         if (completeButton) {
             completeButton.addEventListener("click", () =>
                 completeTask(task.id)
             );
+        }
+
+        if (editButton) {
+            editButton.addEventListener("click", () => editTask(task.id));
         }
 
         if (deleteButton) {
@@ -141,25 +150,54 @@ function editTask(id) {
         const taskNode = document.getElementById(`taskId-${id}`);
         if (taskNode) {
             const titleElement = taskNode.querySelector("h1");
-            const editButton = taskNode.querySelector("button:nth-child(4)");
-
             const originalTitle = task.title;
-            const newInput = document.createElement("input");
-            newInput.type = "text";
-            newInput.value = originalTitle;
 
-            titleElement.replaceWith(newInput);
-            editButton.innerText = "Save";
+            titleElement.innerHTML = `<input type="text" value="${originalTitle}" id="editInput-${id}" />`;
 
-            editButton.onclick = function () {
-                const updatedTitle = newInput.value.trim();
-                if (updatedTitle) {
-                    task.title = updatedTitle;
-                    updateTaskDOM(task);
-                } else {
-                    alert("Please enter a valid task title.");
-                }
-            };
+            const saveButton = document.createElement("button");
+            saveButton.classList.add("common-button");
+            saveButton.classList.add("common-button--save");
+            saveButton.innerText = "Save";
+
+            const editButton = taskNode.querySelector(".common-button--edit");
+            if (editButton) {
+                editButton.style.display = "none";
+            }
+
+            taskNode.insertBefore(
+                saveButton,
+                taskNode.querySelector(".common-button--delete")
+            );
+
+            saveButton.addEventListener("click", () =>
+                saveTask(id, originalTitle)
+            );
+        }
+    }
+}
+
+function saveTask(id, originalTitle) {
+    const task = todos.find((task) => task.id === id);
+
+    if (task) {
+        const taskNode = document.getElementById(`taskId-${id}`);
+        if (taskNode) {
+            const editInput = taskNode.querySelector(`#editInput-${id}`);
+            const newTitle = sanitizeInput(editInput.value.trim());
+
+            if (!newTitle) {
+                alert("Please enter a valid task title.");
+                return;
+            }
+
+            task.title = newTitle;
+
+            editInput.remove();
+            taskNode.querySelector(".common-button--save").remove();
+
+            updateTaskDOM(task);
+
+            task.title = originalTitle;
         }
     }
 }
