@@ -1,10 +1,7 @@
-let addToDoButton = document.querySelector(".task__button-add");
-let toDoContainer = document.querySelector(".todo__container");
-let todoInput = document.querySelector(".task__input");
-let createTask = document.querySelector(".task-board__button--create");
-let taskCardNew = document.querySelector(".task__card-new");
-let taskContainer = document.querySelector(".task__container");
-let taskCard = document.querySelector(".task__card");
+import { sanitizeInput, generateUniqueId } from "./helpers.js";
+import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
+
+const todos = [];
 
 createTask.addEventListener("click", function () {
     taskCard.style.display =
@@ -15,16 +12,9 @@ createTask.addEventListener("click", function () {
         taskCard.style.display === "none" ? "+Create Task" : "Hide Task";
 });
 
-const todos = [];
-
-function generateUniqueId() {
-    return new Date().getTime();
-}
-function sanitizeInput(input) {
-    const maxLength = 100;
-    const sanitizedInput = input.replace(/<\/?[^>]+(>|$)/g, "");
-    return sanitizedInput.substring(0, maxLength);
-}
+addToDoButton.addEventListener("click", () => {
+    addTask();
+});
 
 function addTask() {
     const titleInput = sanitizeInput(todoInput.value.trim());
@@ -55,9 +45,9 @@ function getTaskNode(task) {
     div.innerHTML = `
         <h1>${task.title}</h1>
         <p>Created At: ${task.createdAt}</p>
-        <button onclick="completeTask(${task.id})">complete</button>
-        <button onclick="editTodo(${task.id})">Edit</button>
-        <button onclick="deleteTask(${task.id})">Delete</button>
+        <button >Complete</button>
+        <button >Edit</button>
+        <button >Delete</button>
       `;
     return div;
 }
