@@ -1,9 +1,7 @@
-import {
-    sanitizeInput,
-    generateUniqueId,
-    formatDate,
-    calculateDays,
-} from "./helpers.js";
+import { sanitizeInput } from "./helpers/sanitizeInput.js";
+import { generateUniqueId } from "./helpers/generateUniqueId.js";
+import { formatDate } from "./helpers/formatDate.js";
+import { calculateDays } from "./helpers/calculateDays.js";
 import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
 
 const todos = [];
