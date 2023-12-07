@@ -48,7 +48,7 @@ function getTaskNode(task) {
         ${
             !task.isCompleted
                 ? `<button class="common-button common-button--complete">Complete</button>
-                   <button class="common-button common-button--edit">Edit</button>`
+                   <button class="common-button">Edit</button>`
                 : ""
         }
         <button class="common-button common-button--delete">Delete</button>
@@ -106,8 +106,7 @@ function updateTaskDOM(task) {
             <p>Created At: ${task.createdAt}</p>
             ${
                 !task.isCompleted
-                    ? `<button class="common-button common-button--complete">Complete</button>
-                       <button >Edit</button>`
+                    ? `<button class="common-button common-button--complete">Complete</button>`
                     : ""
             }
             <button class="common-button common-button--delete">Delete</button>
