@@ -14,7 +14,7 @@ createTask.addEventListener("click", function () {
             ? "block"
             : "none";
     createTask.innerText =
-        taskCard.style.display === "none" ? "Create Task" : "Hide Task";
+        taskCard.style.display === "none" ? "+Create Task" : "Hide Task";
 });
 
 addToDoButton.addEventListener("click", () => {
