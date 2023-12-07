@@ -1,6 +1,6 @@
-@use "variables";
-@use "base";
-@use "layout";
+@import "variables";
+@import "base";
+@import "layout";
 
 .header {
     &__container {
@@ -9,7 +9,7 @@
 
     &__nav {
         align-items: center;
-        background: variables.$secondary-color;
+        background: $secondary-color;
         display: flex;
         justify-content: space-between;
     }
@@ -22,7 +22,7 @@
 
 .task-board {
     &__container {
-        background-color: variables.$secondary-color;
+        background-color: $secondary-color;
         padding: 1rem;
     }
     &__button-area {
@@ -33,27 +33,27 @@
     }
     &__button {
         border-radius: 5px;
-        border: 1px solid variables.$border-color;
+        border: 1px solid $border-color;
         padding: 0.5rem;
         &--create {
-            background-color: variables.$primary-color;
-            color: variables.$color-white;
+            background-color: $primary-color;
+            color: $color-white;
         }
     }
 }
 
 .task {
     &__container {
-        background-color: variables.$secondary-color;
+        background-color: $secondary-color;
         display: grid;
         gap: 1rem 2rem;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         padding: 1rem 1rem;
     }
     &__card {
-        background-color: variables.$color-white;
+        background-color: $color-white;
         border-radius: 5px;
-        border: 1px solid variables.$border-color;
+        border: 1px solid $border-color;
         display: none;
         height: auto;
         margin-bottom: 1rem;
@@ -61,9 +61,9 @@
         text-align: center;
     }
     &__card-new {
-        background-color: variables.$color-white;
+        background-color: $color-white;
         border-radius: 5px;
-        border: 1px solid variables.$border-color;
+        border: 1px solid $border-color;
         height: auto;
         margin-bottom: 1rem;
         padding: 4rem 1rem;

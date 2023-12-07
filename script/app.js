@@ -1,11 +1,7 @@
-let addToDoButton = document.querySelector(".task__button-add");
-let toDoContainer = document.querySelector(".todo__container");
-let todoInput = document.querySelector(".task__input");
-let createTask = document.querySelector(".task-board__button--create");
-let taskCardNew = document.querySelector(".task__card-new");
-let taskContainer = document.querySelector(".task__container");
-let taskCard = document.querySelector(".task__card");
-let todoList = document.querySelector(".task__todo-list");
+import { sanitizeInput, generateUniqueId } from "./helpers.js";
+import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
+
+const todos = [];
 
 createTask.addEventListener("click", function () {
     taskCard.style.display =
@@ -16,16 +12,9 @@ createTask.addEventListener("click", function () {
         taskCard.style.display === "none" ? "Create Task" : "Hide Task";
 });
 
-const todos = [];
-
-function generateUniqueId() {
-    return new Date().getTime();
-}
-function sanitizeInput(input) {
-    const maxLength = 100;
-    const sanitizedInput = input.replace(/<\/?[^>]+(>|$)/g, "");
-    return sanitizedInput.substring(0, maxLength);
-}
+addToDoButton.addEventListener("click", () => {
+    addTask();
+});
 
 function addTask() {
     const titleInput = sanitizeInput(todoInput.value.trim());
@@ -54,12 +43,26 @@ function getTaskNode(task) {
     div.classList.add("task__card-new");
     div.setAttribute("id", `taskId-${task.id}`);
     div.innerHTML = `
-<h1>${task.title}</h1>
-<p>Created At: ${task.createdAt}</p>
-<button onclick="completeTask(${task.id})">Complete</button>
-<button onclick="editTask(${task.id})">Edit</button>
-<button onclick="deleteTask(${task.id})">Delete</button>
-`;
+        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+        <p>Created At: ${task.createdAt}</p>
+        ${
+            !task.isCompleted
+                ? `<button class="common-button common-button--complete">Complete</button>
+                   <button class="common-button common-button--edit">Edit</button>`
+                : ""
+        }
+        <button class="common-button common-button--delete">Delete</button>
+        <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
+    `;
+
+    const completeButton = div.querySelector(".common-button--complete");
+    if (completeButton) {
+        completeButton.addEventListener("click", () => completeTask(task.id));
+    }
+    div.querySelector(".common-button--delete").addEventListener("click", () =>
+        deleteTask(task.id)
+    );
+
     return div;
 }
 
@@ -97,17 +100,33 @@ function updateTaskDOM(task) {
     const taskNode = document.getElementById(`taskId-${task.id}`);
     if (taskNode) {
         taskNode.innerHTML = `
-     <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-     <p>Created At: ${task.createdAt}</p>
-         ${
-             !task.isCompleted
-                 ? `<button onclick="completeTask(${task.id})">Complete</button>
-                              <button onclick="editTask(${task.id})">Edit</button>
-                             `
-                 : ""
-         }
-      <button onclick="deleteTask(${task.id})">Delete</button>
-      <p>Completed in: ${task.createdAt}</p>
-                            `;
+            <h1 class="${task.isCompleted ? "completed" : ""}">${
+            task.title
+        }</h1>
+            <p>Created At: ${task.createdAt}</p>
+            ${
+                !task.isCompleted
+                    ? `<button class="common-button common-button--complete">Complete</button>
+                       <button >Edit</button>`
+                    : ""
+            }
+            <button class="common-button common-button--delete">Delete</button>
+            <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
+        `;
+
+        const completeButton = taskNode.querySelector(
+            ".common-button--complete"
+        );
+        const deleteButton = taskNode.querySelector(".common-button--delete");
+
+        if (completeButton) {
+            completeButton.addEventListener("click", () =>
+                completeTask(task.id)
+            );
+        }
+
+        if (deleteButton) {
+            deleteButton.addEventListener("click", () => deleteTask(task.id));
+        }
     }
 }
