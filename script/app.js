@@ -157,7 +157,9 @@ function editTask(id) {
         if (taskNode) {
             const titleElement = taskNode.querySelector("h1");
             const originalTitle = task.title;
+
             titleElement.innerHTML = `<input type="text" value="${originalTitle}" id="editInput-${id}" />`;
+
             const saveButton = document.createElement("button");
             saveButton.classList.add("common-button");
             saveButton.classList.add("common-button--save");
@@ -188,6 +190,7 @@ function saveTask(id, originalTitle) {
         if (taskNode) {
             const editInput = taskNode.querySelector(`#editInput-${id}`);
             const newTitle = sanitizeInput(editInput.value.trim());
+
             if (!newTitle) {
                 alert("Please enter a valid task title.");
                 return;
@@ -207,6 +210,8 @@ function saveTask(id, originalTitle) {
 
 const todosPerPage = 3;
 let currentPage = 1;
+hideLoadMoreButton();
+hideShowLessButton();
 
 function showTasks() {
     const start = 0;
@@ -218,26 +223,30 @@ function showTasks() {
 
     if (end < todos.length) {
         showLoadMoreButton();
-    } else if (currentPage > 1) {
-        showShowLessButton();
     } else {
         hideLoadMoreButton();
+        if (currentPage > 1) {
+            showShowLessButton();
+        }
     }
 }
 
 function showLoadMoreButton() {
+    loadMoreButton.style.display = "block";
     loadMoreButton.addEventListener("click", loadMoreTasks);
 }
 
 function hideLoadMoreButton() {
-    const loadMoreButton = document.querySelector(".common-button--load-more");
-    if (loadMoreButton) {
-        loadMoreButton.remove();
-    }
+    loadMoreButton.style.display = "none";
 }
 
 function showShowLessButton() {
+    showLessButton.style.display = "block";
     showLessButton.addEventListener("click", showLessTasks);
+}
+
+function hideShowLessButton() {
+    showLessButton.style.display = "none";
 }
 
 function loadMoreTasks() {
@@ -247,7 +256,8 @@ function loadMoreTasks() {
 
 function showLessTasks() {
     currentPage = 1;
+    hideShowLessButton();
+    showLoadMoreButton();
     showTasks();
 }
-
 showTasks();
