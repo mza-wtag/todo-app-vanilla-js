@@ -9,7 +9,6 @@ import {
     taskCard,
     loadMoreButton,
     showLessButton,
-    taskContainer,
 } from "./elements.js";
 
 const todos = [];
@@ -47,17 +46,17 @@ function getTaskNode(task) {
     div.classList.add("task__card-new");
     div.setAttribute("id", `taskId-${task.id}`);
     div.innerHTML = `
-        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-        <p>Created At: ${task.createdAt}</p>
-        ${
-            !task.isCompleted
-                ? `<button class="common-button common-button--complete">Complete</button>
-                   <button class="common-button common-button--edit">Edit</button>`
-                : ""
-        }
-        <button class="common-button common-button--delete">Delete</button>
-        <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
-    `;
+<h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+<p>Created At: ${task.createdAt}</p>
+${
+    !task.isCompleted
+        ? `<button class="common-button common-button--complete">Complete</button>
+<button class="common-button common-button--edit">Edit</button>`
+        : ""
+}
+<button class="common-button common-button--delete">Delete</button>
+<p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
+`;
 
     const completeButton = div.querySelector(".common-button--complete");
     if (completeButton) {
@@ -73,10 +72,9 @@ function getTaskNode(task) {
     return div;
 }
 
-function renderTask(tasks) {
-    tasks.forEach((task) => {
-        taskContainer.appendChild(getTaskNode(task));
-    });
+function pushToDOM(task) {
+    const taskInput = document.getElementById("task-input");
+    taskInput.after(getTaskNode(task));
     todoInput.value = "";
 }
 
@@ -184,7 +182,7 @@ function editTask(id) {
     }
 }
 
-function saveTask(id, originalTitle) {
+function saveTask(id) {
     const task = todos.find((task) => task.id === id);
 
     if (task) {
@@ -204,14 +202,13 @@ function saveTask(id, originalTitle) {
             taskNode.querySelector(".common-button--save").remove();
 
             updateTaskDOM(task);
-
-            task.title = originalTitle;
         }
     }
 }
 
-const todosPerPage = 9;
+const todosPerPage = 3;
 let currentPage = 1;
+
 hideLoadMoreButton();
 hideShowLessButton();
 
@@ -221,7 +218,7 @@ function showTasks() {
     const tasksToShow = todos.slice(start, end);
     const taskNodes = document.querySelectorAll(".task__card-new");
     taskNodes.forEach((node) => node.remove());
-    renderTask(tasksToShow);
+    tasksToShow.forEach((task) => pushToDOM(task));
 
     if (end < todos.length) {
         showLoadMoreButton();
@@ -264,6 +261,6 @@ function showLessTasks() {
     const tasksToShow = todos.slice(0, todosPerPage);
     const taskNodes = document.querySelectorAll(".task__card-new");
     taskNodes.forEach((node) => node.remove());
-    renderTask(tasksToShow);
+    tasksToShow.forEach((task) => pushToDOM(task));
 }
 showTasks();
