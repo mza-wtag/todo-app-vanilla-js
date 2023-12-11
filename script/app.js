@@ -9,6 +9,7 @@ import {
     taskCard,
     loadMoreButton,
     showLessButton,
+    taskContainer,
 } from "./elements.js";
 
 const todos = [];
@@ -72,9 +73,10 @@ ${
     return div;
 }
 
-function pushToDOM(task) {
-    const taskInput = document.getElementById("task-input");
-    taskInput.after(getTaskNode(task));
+function renderTask(tasks) {
+    tasks.forEach((task) => {
+        taskContainer.appendChild(getTaskNode(task));
+    });
     todoInput.value = "";
 }
 
@@ -219,7 +221,7 @@ function showTasks() {
     const tasksToShow = todos.slice(start, end);
     const taskNodes = document.querySelectorAll(".task__card-new");
     taskNodes.forEach((node) => node.remove());
-    tasksToShow.forEach((task) => pushToDOM(task));
+    renderTask(tasksToShow);
 
     if (end < todos.length) {
         showLoadMoreButton();
@@ -259,9 +261,9 @@ function showLessTasks() {
     currentPage = 1;
     hideShowLessButton();
     showLoadMoreButton();
-    const tasksToShow = todos.slice(-todosPerPage);
+    const tasksToShow = todos.slice(0, todosPerPage);
     const taskNodes = document.querySelectorAll(".task__card-new");
     taskNodes.forEach((node) => node.remove());
-    tasksToShow.forEach((task) => pushToDOM(task));
+    renderTask(tasksToShow);
 }
 showTasks();
