@@ -1,4 +1,4 @@
-export const addToDoButton = document.querySelector(".task__button-add");
+export const addToDoButton = document.querySelector(".task-board__button--add");
 export const toDoContainer = document.querySelector(".todo__container");
 export const todoInput = document.querySelector(".task__input");
 export const createTask = document.querySelector(".task-board__button--create");
