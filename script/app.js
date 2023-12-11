@@ -196,8 +196,6 @@ function saveTask(id, originalTitle) {
             taskNode.querySelector(".common-button--save").remove();
 
             updateTaskDOM(task);
-
-            task.title = originalTitle;
         }
     }
 }
