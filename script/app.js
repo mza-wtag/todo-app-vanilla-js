@@ -210,7 +210,7 @@ function saveTask(id, originalTitle) {
     }
 }
 
-const todosPerPage = 3;
+const todosPerPage = 9;
 let currentPage = 1;
 hideLoadMoreButton();
 hideShowLessButton();
