@@ -47,29 +47,27 @@ function getTaskNode(task) {
     div.classList.add("task__card-new");
     div.setAttribute("id", `taskId-${task.id}`);
     div.innerHTML = `
-<h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-<p>Created At: ${task.createdAt}</p>
-${
-    !task.isCompleted
-        ? `<button class="task-board__button task-board__button--complete">Complete</button>
-<button class="task-board__button task-board__button--edit">Edit</button>`
-        : ""
-}
-<button class="task-board__button task-board__button--delete">Delete</button>
-<p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
-`;
+        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+        <p>Created At: ${task.createdAt}</p>
+        ${
+            !task.isCompleted
+                ? `<button class="common-button common-button--complete">Complete</button>
+                   <button class="common-button common-button--edit">Edit</button>`
+                : ""
+        }
+        <button class="common-button common-button--delete">Delete</button>
+        <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
+    `;
 
-    const completeButton = div.querySelector(".task-board__button--complete");
+    const completeButton = div.querySelector(".common-button--complete");
     if (completeButton) {
         completeButton.addEventListener("click", () => completeTask(task.id));
     }
-    div.querySelector(".task-board__button--delete").addEventListener(
-        "click",
-        () => deleteTask(task.id)
+    div.querySelector(".common-button--delete").addEventListener("click", () =>
+        deleteTask(task.id)
     );
-    div.querySelector(".task-board__button--edit").addEventListener(
-        "click",
-        () => editTask(task.id)
+    div.querySelector(".common-button--edit").addEventListener("click", () =>
+        editTask(task.id)
     );
 
     return div;
