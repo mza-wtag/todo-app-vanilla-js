@@ -51,23 +51,25 @@ function getTaskNode(task) {
 <p>Created At: ${task.createdAt}</p>
 ${
     !task.isCompleted
-        ? `<button class="common-button common-button--complete">Complete</button>
-<button class="common-button common-button--edit">Edit</button>`
+        ? `<button class="task-board__button task-board__button--complete">Complete</button>
+<button class="task-board__button task-board__button--edit">Edit</button>`
         : ""
 }
-<button class="common-button common-button--delete">Delete</button>
+<button class="task-board__button task-board__button--delete">Delete</button>
 <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
 `;
 
-    const completeButton = div.querySelector(".common-button--complete");
+    const completeButton = div.querySelector(".task-board__button--complete");
     if (completeButton) {
         completeButton.addEventListener("click", () => completeTask(task.id));
     }
-    div.querySelector(".common-button--delete").addEventListener("click", () =>
-        deleteTask(task.id)
+    div.querySelector(".task-board__button--delete").addEventListener(
+        "click",
+        () => deleteTask(task.id)
     );
-    div.querySelector(".common-button--edit").addEventListener("click", () =>
-        editTask(task.id)
+    div.querySelector(".task-board__button--edit").addEventListener(
+        "click",
+        () => editTask(task.id)
     );
 
     return div;
@@ -121,19 +123,21 @@ function updateTaskDOM(task) {
 <p>Created At: ${task.createdAt}</p>
 ${
     !task.isCompleted
-        ? `<button class="common-button common-button--complete">Complete</button>
-<button class="common-button common-button--edit">Edit</button>`
+        ? `<button class="task-board__button task-board__button--complete">Complete</button>
+<button class="task-board__button task-board__button--edit">Edit</button>`
         : ""
 }
-<button class="common-button common-button--delete">Delete</button>
+<button class="task-board__button task-board__button--delete">Delete</button>
 <p>${completedDays}</p>
 `;
 
         const completeButton = taskNode.querySelector(
-            ".common-button--complete"
+            ".task-board__button--complete"
         );
-        const editButton = taskNode.querySelector(".common-button--edit");
-        const deleteButton = taskNode.querySelector(".common-button--delete");
+        const editButton = taskNode.querySelector(".task-board__button--edit");
+        const deleteButton = taskNode.querySelector(
+            ".task-board__button--delete"
+        );
 
         if (completeButton) {
             completeButton.addEventListener("click", () =>
@@ -163,18 +167,20 @@ function editTask(id) {
             titleElement.innerHTML = `<input type="text" value="${originalTitle}" id="editInput-${id}" />`;
 
             const saveButton = document.createElement("button");
-            saveButton.classList.add("common-button");
-            saveButton.classList.add("common-button--save");
+            saveButton.classList.add("task-board__button");
+            saveButton.classList.add("task-board__button--save");
             saveButton.innerText = "Save";
 
-            const editButton = taskNode.querySelector(".common-button--edit");
+            const editButton = taskNode.querySelector(
+                ".task-board__button--edit"
+            );
             if (editButton) {
                 editButton.style.display = "none";
             }
 
             taskNode.insertBefore(
                 saveButton,
-                taskNode.querySelector(".common-button--delete")
+                taskNode.querySelector(".task-board__button--delete")
             );
 
             saveButton.addEventListener("click", () =>
@@ -201,7 +207,7 @@ function saveTask(id, originalTitle) {
             task.title = newTitle;
 
             editInput.remove();
-            taskNode.querySelector(".common-button--save").remove();
+            taskNode.querySelector(".task-board__button--save").remove();
 
             updateTaskDOM(task);
 
