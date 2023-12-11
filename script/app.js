@@ -223,6 +223,7 @@ function showTasks() {
 
     if (end < todos.length) {
         showLoadMoreButton();
+        hideShowLessButton();
     } else {
         hideLoadMoreButton();
         if (currentPage > 1) {
@@ -258,6 +259,9 @@ function showLessTasks() {
     currentPage = 1;
     hideShowLessButton();
     showLoadMoreButton();
-    showTasks();
+    const tasksToShow = todos.slice(-todosPerPage);
+    const taskNodes = document.querySelectorAll(".task__card-new");
+    taskNodes.forEach((node) => node.remove());
+    tasksToShow.forEach((task) => pushToDOM(task));
 }
 showTasks();
