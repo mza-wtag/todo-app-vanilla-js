@@ -31,7 +31,7 @@ function addTask() {
         isCompleted: false,
         createdAt: formatDate(),
     });
-    pushToDOM(todos[0]);
+    renderTask(todos[0]);
 }
 
 function getTaskNode(task) {
@@ -65,7 +65,7 @@ function getTaskNode(task) {
     return div;
 }
 
-function pushToDOM(task) {
+function renderTask(task) {
     const taskInput = document.getElementById("task-input");
     taskInput.after(getTaskNode(task));
     todoInput.value = "";
