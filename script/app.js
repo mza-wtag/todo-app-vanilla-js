@@ -38,7 +38,7 @@ function addTask() {
         isCompleted: false,
         createdAt: formatDate(),
     });
-    showTasks();
+    renderTask(todos[0]);
 }
 
 function getTaskNode(task) {
@@ -72,7 +72,7 @@ ${
     return div;
 }
 
-function pushToDOM(task) {
+function renderTask(task) {
     const taskInput = document.getElementById("task-input");
     taskInput.after(getTaskNode(task));
     todoInput.value = "";
@@ -202,65 +202,8 @@ function saveTask(id) {
             taskNode.querySelector(".common-button--save").remove();
 
             updateTaskDOM(task);
+
+            task.title = originalTitle;
         }
     }
 }
-
-const todosPerPage = 3;
-let currentPage = 1;
-
-hideLoadMoreButton();
-hideShowLessButton();
-
-function showTasks() {
-    const start = 0;
-    const end = start + todosPerPage * currentPage;
-    const tasksToShow = todos.slice(start, end);
-    const taskNodes = document.querySelectorAll(".task__card-new");
-    taskNodes.forEach((node) => node.remove());
-    tasksToShow.forEach((task) => pushToDOM(task));
-
-    if (end < todos.length) {
-        showLoadMoreButton();
-        hideShowLessButton();
-    } else {
-        hideLoadMoreButton();
-        if (currentPage > 1) {
-            showShowLessButton();
-        }
-    }
-}
-
-function showLoadMoreButton() {
-    loadMoreButton.style.display = "block";
-    loadMoreButton.addEventListener("click", loadMoreTasks);
-}
-
-function hideLoadMoreButton() {
-    loadMoreButton.style.display = "none";
-}
-
-function showShowLessButton() {
-    showLessButton.style.display = "block";
-    showLessButton.addEventListener("click", showLessTasks);
-}
-
-function hideShowLessButton() {
-    showLessButton.style.display = "none";
-}
-
-function loadMoreTasks() {
-    currentPage++;
-    showTasks();
-}
-
-function showLessTasks() {
-    currentPage = 1;
-    hideShowLessButton();
-    showLoadMoreButton();
-    const tasksToShow = todos.slice(0, todosPerPage);
-    const taskNodes = document.querySelectorAll(".task__card-new");
-    taskNodes.forEach((node) => node.remove());
-    tasksToShow.forEach((task) => pushToDOM(task));
-}
-showTasks();
