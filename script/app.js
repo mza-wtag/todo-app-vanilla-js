@@ -2,14 +2,7 @@ import { sanitizeInput } from "./helpers/sanitizeInput.js";
 import { generateUniqueId } from "./helpers/generateUniqueId.js";
 import { formatDate } from "./helpers/formatDate.js";
 import { calculateDays } from "./helpers/calculateDays.js";
-import {
-    addToDoButton,
-    todoInput,
-    createTask,
-    taskCard,
-    loadMoreButton,
-    showLessButton,
-} from "./elements.js";
+import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
 
 const todos = [];
 
@@ -46,17 +39,17 @@ function getTaskNode(task) {
     div.classList.add("task__card-new");
     div.setAttribute("id", `taskId-${task.id}`);
     div.innerHTML = `
-<h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-<p>Created At: ${task.createdAt}</p>
-${
-    !task.isCompleted
-        ? `<button class="common-button common-button--complete">Complete</button>
-<button class="common-button common-button--edit">Edit</button>`
-        : ""
-}
-<button class="common-button common-button--delete">Delete</button>
-<p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
-`;
+        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+        <p>Created At: ${task.createdAt}</p>
+        ${
+            !task.isCompleted
+                ? `<button class="common-button common-button--complete">Complete</button>
+                   <button class="common-button common-button--edit">Edit</button>`
+                : ""
+        }
+        <button class="common-button common-button--delete">Delete</button>
+        <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
+    `;
 
     const completeButton = div.querySelector(".common-button--complete");
     if (completeButton) {
@@ -89,7 +82,6 @@ function deleteTask(id) {
             if (taskNode) {
                 taskNode.remove();
             }
-            showTasks();
         }
     }
 }
@@ -115,17 +107,19 @@ function updateTaskDOM(task) {
             : "";
 
         taskNode.innerHTML = `
-<h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-<p>Created At: ${task.createdAt}</p>
-${
-    !task.isCompleted
-        ? `<button class="common-button common-button--complete">Complete</button>
-<button class="common-button common-button--edit">Edit</button>`
-        : ""
-}
-<button class="common-button common-button--delete">Delete</button>
-<p>${completedDays}</p>
-`;
+            <h1 class="${task.isCompleted ? "completed" : ""}">${
+            task.title
+        }</h1>
+            <p>Created At: ${task.createdAt}</p>
+            ${
+                !task.isCompleted
+                    ? `<button class="common-button common-button--complete">Complete</button>
+                       <button class="common-button common-button--edit">Edit</button>`
+                    : ""
+            }
+            <button class="common-button common-button--delete">Delete</button>
+            <p>${completedDays}</p>
+        `;
 
         const completeButton = taskNode.querySelector(
             ".common-button--complete"
@@ -182,7 +176,7 @@ function editTask(id) {
     }
 }
 
-function saveTask(id) {
+function saveTask(id, originalTitle) {
     const task = todos.find((task) => task.id === id);
 
     if (task) {
@@ -202,8 +196,6 @@ function saveTask(id) {
             taskNode.querySelector(".common-button--save").remove();
 
             updateTaskDOM(task);
-
-            task.title = originalTitle;
         }
     }
 }
