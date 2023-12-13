@@ -29,10 +29,9 @@ const getTodoCard = (task) => {
 };
 
 const renderTodos = () => {
-    const taskCardToKeep = taskCardElement;
     taskListContainerElement.innerHTML = "";
 
-    taskListContainerElement.appendChild(taskCardToKeep);
+    taskListContainerElement.appendChild(taskCardElement);
 
     const reversedTodos = todos.slice().reverse();
     reversedTodos.forEach((task) => {
@@ -41,7 +40,7 @@ const renderTodos = () => {
     });
 };
 
-const addTodo = (todos, title) => {
+const addTodo = (title) => {
     const newTask = {
         id: generateUniqueId(),
         title,
@@ -68,7 +67,7 @@ toggleButtonToCreateTask.addEventListener("click", () => {
         : "Hide task";
 });
 
-addNewTaskButtonElement.addEventListener("click", () => {
+function validateAndAddTodo() {
     const title = sanitizeInput(taskInputElement.value.trim());
 
     if (!title) {
@@ -76,20 +75,16 @@ addNewTaskButtonElement.addEventListener("click", () => {
         return;
     }
 
-    addTodo(todos, title);
-});
+    addTodo(title);
+}
 
-taskInputElement.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-        event.preventDefault();
+addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
 
-        const title = sanitizeInput(taskInputElement.value.trim());
-
-        if (!title) {
-            alert("Task title is required.");
-            return;
+if (validateAndAddTodo) {
+    taskInputElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            validateAndAddTodo();
         }
-
-        addTodo(todos, title);
-    }
-});
+    });
+}
