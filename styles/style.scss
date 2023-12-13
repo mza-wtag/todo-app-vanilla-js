@@ -21,52 +21,48 @@
 }
 
 .task-board {
-    &__container {
-        background-color: $secondary-color;
+    background-color: $secondary-color;
+    &__action-wrapper {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
         padding: 1rem;
     }
-    &__button-area {
+}
+.btn {
+    border-radius: 5px;
+    border: 1px solid $border-color;
+    padding: 0.5rem;
+    &--primary {
+        background-color: $primary-color;
+        color: $color-white;
+    }
+    &__filter-buttons {
         align-items: center;
         display: flex;
         justify-content: space-between;
         padding-top: 2rem;
     }
-    &__button {
-        border-radius: 5px;
-        border: 1px solid $border-color;
-        padding: 0.5rem;
-        &--create {
-            background-color: $primary-color;
-            color: $color-white;
-        }
+}
+
+.task-card {
+    background-color: $color-white;
+    border-radius: 5px;
+    border: 1px solid $border-color;
+    height: auto;
+    margin-bottom: 1rem;
+    padding: 4rem 1rem;
+    text-align: center;
+
+    &--hidden {
+        display: none;
     }
 }
 
-.task {
+.task-list {
     &__container {
-        background-color: $secondary-color;
         display: grid;
         gap: 1rem 2rem;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        padding: 1rem 1rem;
-    }
-    &__card {
-        background-color: $color-white;
-        border-radius: 5px;
-        border: 1px solid $border-color;
-        display: none;
-        height: auto;
-        margin-bottom: 1rem;
-        padding: 4rem 1rem;
-        text-align: center;
-    }
-    &__card-new {
-        background-color: $color-white;
-        border-radius: 5px;
-        border: 1px solid $border-color;
-        height: auto;
-        margin-bottom: 1rem;
-        padding: 4rem 1rem;
-        text-align: center;
     }
 }
