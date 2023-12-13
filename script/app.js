@@ -1,73 +1,104 @@
 import { sanitizeInput } from "./helpers/sanitizeInput.js";
 import { generateUniqueId } from "./helpers/generateUniqueId.js";
 import { formatDate } from "./helpers/formatDate.js";
-import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
+import {
+    toggleButtonToCreateTask,
+    taskCardElement,
+    addNewTaskButtonElement,
+    taskInputElement,
+    taskListContainerElement,
+} from "./elements.js";
 
 const todos = [];
 
-createTask.addEventListener("click", function () {
-    taskCard.style.display =
-        taskCard.style.display === "none" || !taskCard.style.display
-            ? "block"
-            : "none";
-    createTask.innerText =
-        taskCard.style.display === "none" ? "+Create Task" : "Hide Task";
-});
+toggleButtonToCreateTask.addEventListener("click", () => {
+    const hiddenTaskCardClassname = "task-card--hidden";
 
-addToDoButton.addEventListener("click", () => {
-    addTask();
-});
-
-function addTask() {
-    const titleInput = sanitizeInput(todoInput.value.trim());
-    if (!titleInput) {
-        alert("Please enter a valid task title.");
-        return;
-    }
-    todos.unshift({
-        id: generateUniqueId(),
-        title: titleInput,
-        isCompleted: false,
-        createdAt: formatDate(),
-    });
-    renderTask(todos[0]);
-}
-
-function getTaskNode(task) {
-    const div = document.createElement("div");
-    div.classList.add("task__card-new");
-    div.setAttribute("id", `taskId-${task.id}`);
-    div.innerHTML = `
-        <h1>${task.title}</h1>
-        <p>Created At: ${task.createdAt}</p>
-        <button >Complete</button>
-        <button >Edit</button>
-        <button class="common-button common-button--delete">Delete</button>
-      `;
-    div.querySelector(".common-button--delete").addEventListener("click", () =>
-        deleteTask(task.id)
+    taskCardElement.classList.toggle(hiddenTaskCardClassname);
+    const isTaskCardHidden = taskCardElement.classList.contains(
+        hiddenTaskCardClassname
     );
 
-    return div;
-}
+    toggleButtonToCreateTask.innerText = isTaskCardHidden
+        ? "+ Create task"
+        : "Hide task";
+});
 
-function renderTask(task) {
-    const taskInput = document.getElementById("task-input");
-    taskInput.after(getTaskNode(task));
-    todoInput.value = "";
-}
+const getTodoCard = (task) => {
+    const element = document.createElement("div");
 
-function deleteTask(id) {
-    const userConfirmed = confirm("Are you sure you want to delete this task?");
-    if (userConfirmed) {
-        const index = todos.findIndex((task) => task.id === id);
+    element.classList.add("task-card");
+    element.setAttribute("id", `task-${task.id}`);
 
-        if (index !== -1) {
-            todos.splice(index, 1);
-            const taskNode = document.getElementById(`taskId-${id}`);
-            if (taskNode) {
-                taskNode.remove();
-            }
+    element.innerHTML = `
+        <h1>${task.title}</h1>
+        <p>Created At: ${task.createdAt}</p>
+        <button class="task-card__icon" data-action="complete">Complete</button>
+        <button class="task-card__icon" data-action="edit">Edit</button>
+        <button class="task-card__icon" data-action="delete">Delete</button>
+    `;
+
+    const deleteButton = element.querySelector('[data-action="delete"]');
+    deleteButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to delete this task?")) {
+            deleteTodo(task.id);
         }
+    });
+    return element;
+};
+
+const renderTodos = () => {
+    taskListContainerElement.innerHTML = "";
+
+    taskListContainerElement.appendChild(taskCardElement);
+
+    const reversedTodos = todos.slice().reverse();
+    reversedTodos.forEach((task) => {
+        const taskCard = getTodoCard(task);
+        taskListContainerElement.appendChild(taskCard);
+    });
+};
+
+const addTodo = (title) => {
+    const newTask = {
+        id: generateUniqueId(),
+        title,
+        isCompleted: false,
+        createdAt: formatDate(),
+    };
+
+    todos.push(newTask);
+    renderTodos();
+    taskInputElement.value = "";
+    taskInputElement.focus();
+};
+
+const validateAndAddTodo = () => {
+    const title = sanitizeInput(taskInputElement.value.trim());
+
+    if (!title) {
+        alert("Task title is required.");
+        return;
     }
+
+    addTodo(title);
+};
+
+addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
+
+if (validateAndAddTodo) {
+    taskInputElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            validateAndAddTodo();
+        }
+    });
 }
+
+const deleteTodo = (taskId) => {
+    const index = todos.findIndex((task) => task.id === taskId);
+    if (index !== -1) {
+        todos.splice(index, 1);
+        renderTodos();
+    }
+};
