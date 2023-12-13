@@ -67,7 +67,7 @@ const addTodo = (title) => {
     taskInputElement.focus();
 };
 
-function validateAndAddTodo() {
+const validateAndAddTodo = () => {
     const title = sanitizeInput(taskInputElement.value.trim());
 
     if (!title) {
@@ -76,8 +76,7 @@ function validateAndAddTodo() {
     }
 
     addTodo(title);
-}
-
+};
 addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
 
 if (validateAndAddTodo) {
