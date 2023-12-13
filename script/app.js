@@ -2,22 +2,22 @@ import { sanitizeInput } from "./helpers/sanitizeInput.js";
 import { generateUniqueId } from "./helpers/generateUniqueId.js";
 import { formatDate } from "./helpers/formatDate.js";
 import {
-    createTaskButtonElement,
-    createTaskCardElement,
-    addTaskButtonElement,
-    createTaskInputElement,
+    toggleButtonToCreateTask,
+    taskCardElement,
+    addNewTaskButtonElement,
+    taskInputElement,
     taskListContainerElement,
 } from "./elements.js";
 
 const todos = [];
 
 const getTodoCard = (task) => {
-    const div = document.createElement("div");
+    const element = document.createElement("div");
 
-    div.classList.add("task-card");
-    div.setAttribute("id", `task-${task.id}`);
+    element.classList.add("task-card");
+    element.setAttribute("id", `task-${task.id}`);
 
-    div.innerHTML = `
+    element.innerHTML = `
         <h1>${task.title}</h1>
         <p>Created At: ${task.createdAt}</p>
         <button class="task-card__icon">Complete</button>
@@ -25,11 +25,11 @@ const getTodoCard = (task) => {
         <button class="task-card__icon">Delete</button>
       `;
 
-    return div;
+    return element;
 };
 
 const renderTodos = () => {
-    const taskCardToKeep = createTaskCardElement;
+    const taskCardToKeep = taskCardElement;
     taskListContainerElement.innerHTML = "";
 
     taskListContainerElement.appendChild(taskCardToKeep);
@@ -41,7 +41,7 @@ const renderTodos = () => {
     });
 };
 
-const addTask = (todos, title) => {
+const addTodo = (todos, title) => {
     const newTask = {
         id: generateUniqueId(),
         title,
@@ -51,45 +51,45 @@ const addTask = (todos, title) => {
 
     todos.push(newTask);
     renderTodos();
-    createTaskInputElement.value = "";
-    createTaskInputElement.focus();
+    taskInputElement.value = "";
+    taskInputElement.focus();
 };
 
-createTaskButtonElement.addEventListener("click", () => {
+toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
 
-    createTaskCardElement.classList.toggle(hiddenTaskCardClassname);
-    const isTaskCardHidden = createTaskCardElement.classList.contains(
+    taskCardElement.classList.toggle(hiddenTaskCardClassname);
+    const isTaskCardHidden = taskCardElement.classList.contains(
         hiddenTaskCardClassname
     );
 
-    createTaskButtonElement.innerText = isTaskCardHidden
+    toggleButtonToCreateTask.innerText = isTaskCardHidden
         ? "+ Create task"
         : "Hide task";
 });
 
-addTaskButtonElement.addEventListener("click", () => {
-    const title = sanitizeInput(createTaskInputElement.value.trim());
+addNewTaskButtonElement.addEventListener("click", () => {
+    const title = sanitizeInput(taskInputElement.value.trim());
 
     if (!title) {
         alert("Task title is required.");
         return;
     }
 
-    addTask(todos, title);
+    addTodo(todos, title);
 });
 
-createTaskInputElement.addEventListener("keydown", (event) => {
+taskInputElement.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         event.preventDefault();
 
-        const title = sanitizeInput(createTaskInputElement.value.trim());
+        const title = sanitizeInput(taskInputElement.value.trim());
 
         if (!title) {
             alert("Task title is required.");
             return;
         }
 
-        addTask(todos, title);
+        addTodo(todos, title);
     }
 });
