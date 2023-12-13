@@ -11,6 +11,19 @@ import {
 
 const todos = [];
 
+toggleButtonToCreateTask.addEventListener("click", () => {
+    const hiddenTaskCardClassname = "task-card--hidden";
+
+    taskCardElement.classList.toggle(hiddenTaskCardClassname);
+    const isTaskCardHidden = taskCardElement.classList.contains(
+        hiddenTaskCardClassname
+    );
+
+    toggleButtonToCreateTask.innerText = isTaskCardHidden
+        ? "+ Create task"
+        : "Hide task";
+});
+
 const getTodoCard = (task) => {
     const element = document.createElement("div");
 
@@ -53,19 +66,6 @@ const addTodo = (title) => {
     taskInputElement.value = "";
     taskInputElement.focus();
 };
-
-toggleButtonToCreateTask.addEventListener("click", () => {
-    const hiddenTaskCardClassname = "task-card--hidden";
-
-    taskCardElement.classList.toggle(hiddenTaskCardClassname);
-    const isTaskCardHidden = taskCardElement.classList.contains(
-        hiddenTaskCardClassname
-    );
-
-    toggleButtonToCreateTask.innerText = isTaskCardHidden
-        ? "+ Create task"
-        : "Hide task";
-});
 
 function validateAndAddTodo() {
     const title = sanitizeInput(taskInputElement.value.trim());
