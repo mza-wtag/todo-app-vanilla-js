@@ -33,7 +33,9 @@ const renderTodos = () => {
     taskListContainerElement.innerHTML = "";
 
     taskListContainerElement.appendChild(taskCardToKeep);
-    todos.forEach((task) => {
+
+    const reversedTodos = todos.slice().reverse();
+    reversedTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
     });
