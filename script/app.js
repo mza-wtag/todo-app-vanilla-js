@@ -71,6 +71,12 @@ const renderTodos = () => {
     reversedTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
+        if (task.isCompleted) {
+            const completeButton = taskCard.querySelector("#complete");
+            completeButton.style.display = "none";
+            const editButton = taskCard.querySelector("#edit");
+            editButton.style.display = "none";
+        }
     });
 };
 
