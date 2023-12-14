@@ -2,134 +2,129 @@ import { sanitizeInput } from "./helpers/sanitizeInput.js";
 import { generateUniqueId } from "./helpers/generateUniqueId.js";
 import { formatDate } from "./helpers/formatDate.js";
 import { calculateDays } from "./helpers/calculateDays.js";
-import { addToDoButton, todoInput, createTask, taskCard } from "./elements.js";
+import {
+    toggleButtonToCreateTask,
+    taskCardElement,
+    addNewTaskButtonElement,
+    taskInputElement,
+    taskListContainerElement,
+} from "./elements.js";
 
 const todos = [];
 
-createTask.addEventListener("click", function () {
-    taskCard.style.display =
-        taskCard.style.display === "none" || !taskCard.style.display
-            ? "block"
-            : "none";
-    createTask.innerText =
-        taskCard.style.display === "none" ? "+Create Task" : "Hide Task";
-});
+toggleButtonToCreateTask.addEventListener("click", () => {
+    const hiddenTaskCardClassname = "task-card--hidden";
 
-addToDoButton.addEventListener("click", () => {
-    addTask();
-});
-
-function addTask() {
-    const titleInput = sanitizeInput(todoInput.value.trim());
-    if (!titleInput) {
-        alert("Please enter a valid task title.");
-        return;
-    }
-    todos.unshift({
-        id: generateUniqueId(),
-        title: titleInput,
-        isCompleted: false,
-        createdAt: formatDate(),
-    });
-    renderTask(todos[0]);
-}
-
-function getTaskNode(task) {
-    const div = document.createElement("div");
-    div.classList.add("task__card-new");
-    div.setAttribute("id", `taskId-${task.id}`);
-    div.innerHTML = `
-        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-        <p>Created At: ${task.createdAt}</p>
-        ${
-            !task.isCompleted
-                ? `<button class="common-button common-button--complete">Complete</button>
-                   <button class="common-button">Edit</button>`
-                : ""
-        }
-        <button class="common-button common-button--delete">Delete</button>
-        <p>${task.isCompleted ? `Completed in: ${task.createdAt}` : ""}</p>
-    `;
-
-    const completeButton = div.querySelector(".common-button--complete");
-    if (completeButton) {
-        completeButton.addEventListener("click", () => completeTask(task.id));
-    }
-    div.querySelector(".common-button--delete").addEventListener("click", () =>
-        deleteTask(task.id)
+    taskCardElement.classList.toggle(hiddenTaskCardClassname);
+    const isTaskCardHidden = taskCardElement.classList.contains(
+        hiddenTaskCardClassname
     );
 
-    return div;
-}
+    toggleButtonToCreateTask.innerText = isTaskCardHidden
+        ? "+ Create task"
+        : "Hide task";
+});
 
-function renderTask(task) {
-    const taskInput = document.getElementById("task-input");
-    taskInput.after(getTaskNode(task));
-    todoInput.value = "";
-}
+const getTodoCard = (task) => {
+    const element = document.createElement("div");
 
-function deleteTask(id) {
-    const userConfirmed = confirm("Are you sure you want to delete this task?");
-    if (userConfirmed) {
-        const index = todos.findIndex((task) => task.id === id);
+    element.classList.add("task-card");
+    element.setAttribute("id", `task-${task.id}`);
 
-        if (index !== -1) {
-            todos.splice(index, 1);
-            const taskNode = document.getElementById(`taskId-${id}`);
-            if (taskNode) {
-                taskNode.remove();
-            }
+    element.innerHTML = `
+        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+        <p>Created At: ${formatDate()}</p>
+        
+        <button class="task-card__icon" id="complete">Complete</button>
+        <button class="task-card__icon" id="edit">Edit</button>
+        <button class="task-card__icon" id="delete">Delete</button>
+        ${
+            task.isCompleted
+                ? `<p>Completed In: ${task.completedInDays} ${
+                      task.completedInDays < 2 ? "day" : "days"
+                  }</p>`
+                : ""
         }
+    `;
+    const completeButton = element.querySelector("#complete");
+    completeButton.addEventListener("click", () => {
+        if (!task.isCompleted) {
+            completeTodo(task.id);
+        }
+    });
+
+    const deleteButton = element.querySelector("#delete");
+    deleteButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to delete this task?")) {
+            deleteTodo(task.id);
+        }
+    });
+    return element;
+};
+
+const renderTodos = () => {
+    taskListContainerElement.innerHTML = "";
+
+    taskListContainerElement.appendChild(taskCardElement);
+
+    const reversedTodos = todos.slice().reverse();
+    reversedTodos.forEach((task) => {
+        const taskCard = getTodoCard(task);
+        taskListContainerElement.appendChild(taskCard);
+    });
+};
+
+const addTodo = (title) => {
+    const newTask = {
+        id: generateUniqueId(),
+        title,
+        isCompleted: false,
+        createdAt: new Date().getTime(),
+    };
+
+    todos.push(newTask);
+    renderTodos();
+    taskInputElement.value = "";
+    taskInputElement.focus();
+};
+
+const validateAndAddTodo = () => {
+    const title = sanitizeInput(taskInputElement.value.trim());
+
+    if (!title) {
+        alert("Task title is required.");
+        return;
     }
+
+    addTodo(title);
+};
+
+addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
+
+if (validateAndAddTodo) {
+    taskInputElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            validateAndAddTodo();
+        }
+    });
 }
 
-function completeTask(id) {
-    const task = todos.find((task) => task.id === id);
+const deleteTodo = (taskId) => {
+    const index = todos.findIndex((task) => task.id === taskId);
+    if (index !== -1) {
+        todos.splice(index, 1);
+        renderTodos();
+    }
+};
+
+const completeTodo = (taskId) => {
+    const task = todos.find((task) => task.id === taskId);
 
     if (task && !task.isCompleted) {
         task.isCompleted = true;
-        task.completedAt = new Date();
-        task.completedInDays = calculateDays(task.createdAt, task.completedAt);
-        updateTaskDOM(task);
+        task.completedAt = new Date().getTime();
+        task.completedInDays = calculateDays(task.completedAt, task.createdAt);
+        renderTodos();
     }
-}
-
-function updateTaskDOM(task) {
-    const taskNode = document.getElementById(`taskId-${task.id}`);
-    if (taskNode) {
-        const completedDays = task.completedAt
-            ? `Completed in: ${task.completedInDays} ${
-                  task.completedInDays < 2 ? "day" : "days"
-              }`
-            : "";
-
-        taskNode.innerHTML = `
-            <h1 class="${task.isCompleted ? "completed" : ""}">${
-            task.title
-        }</h1>
-            <p>Created At: ${task.createdAt}</p>
-            ${
-                !task.isCompleted
-                    ? `<button class="common-button common-button--complete">Complete</button>`
-                    : ""
-            }
-            <button class="common-button common-button--delete">Delete</button>
-            <p>${completedDays}</p>
-        `;
-
-        const completeButton = taskNode.querySelector(
-            ".common-button--complete"
-        );
-        const deleteButton = taskNode.querySelector(".common-button--delete");
-
-        if (completeButton) {
-            completeButton.addEventListener("click", () =>
-                completeTask(task.id)
-            );
-        }
-
-        if (deleteButton) {
-            deleteButton.addEventListener("click", () => deleteTask(task.id));
-        }
-    }
-}
+};
