@@ -32,7 +32,7 @@ const getTodoCard = (task) => {
 
     element.innerHTML = `
         <h1>${task.title}</h1>
-        <p>Created At: ${task.createdAt}</p>
+       <p>Created At: ${formatDate()}</p>
         <button class="task-card__icon">Complete</button>
         <button class="task-card__icon">Edit</button>
         <button class="task-card__icon">Delete</button>
@@ -58,7 +58,7 @@ const addTodo = (title) => {
         id: generateUniqueId(),
         title,
         isCompleted: false,
-        createdAt: formatDate(),
+        createdAt: new Date().getTime(),
     };
 
     todos.push(newTask);
