@@ -32,11 +32,11 @@ const getTodoCard = (task) => {
 
     element.innerHTML = `
         <h1>${task.title}</h1>
-        <p>Created At: ${task.createdAt}</p>
+       <p>Created At: ${formatDate()}</p>
         <button class="task-card__icon" id="complete">Complete</button>
         <button class="task-card__icon" id="edit">Edit</button>
         <button class="task-card__icon" id="delete">Delete</button>
-    `;
+      `;
 
     const deleteButton = element.querySelector("#delete");
     deleteButton.addEventListener("click", () => {
@@ -64,7 +64,7 @@ const addTodo = (title) => {
         id: generateUniqueId(),
         title,
         isCompleted: false,
-        createdAt: formatDate(),
+        createdAt: new Date().getTime(),
     };
 
     todos.push(newTask);
