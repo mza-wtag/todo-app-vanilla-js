@@ -157,7 +157,7 @@ const editTodo = (taskId) => {
     const editButton = taskElement.querySelector(".task-card__icon--edit");
     editButton.innerText = "Save";
 
-    editButton.addEventListener("click", () => {
+    const saveHandler = () => {
         const updatedTitle = sanitizeInput(inputElement.value.trim());
 
         if (!updatedTitle) {
@@ -168,7 +168,19 @@ const editTodo = (taskId) => {
         task.title = updatedTitle;
         renderTodos();
         editButton.innerText = "Edit";
-    });
+        editButton.removeEventListener("click", saveHandler);
+    };
+
+    editButton.addEventListener("click", saveHandler);
+
+    const deleteHandler = () => {
+        renderTodos();
+        editButton.innerText = "Edit";
+        editButton.removeEventListener("click", saveHandler);
+    };
+
+    const deleteButton = taskElement.querySelector(".task-card__icon--delete");
+    deleteButton.addEventListener("click", deleteHandler);
 
     inputElement.focus();
 };
