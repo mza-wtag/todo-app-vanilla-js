@@ -33,9 +33,9 @@ const getTodoCard = (task) => {
     element.innerHTML = `
         <h1>${task.title}</h1>
        <p>Created At: ${formatDate()}</p>
-        <button class="task-card__icon task-card__icon--complete" id="complete">Complete</button>
-        <button class="task-card__icon task-card__icon--edit" id="edit">Edit</button>
-        <button class="task-card__icon task-card__icon-delete" id="delete">Delete</button>
+        <button class="task-card__icon task-card__icon--complete">Complete</button>
+        <button class="task-card__icon task-card__icon--edit">Edit</button>
+        <button class="task-card__icon task-card__icon-delete">Delete</button>
       `;
 
     const deleteButton = element.querySelector(".task-card__icon-delete");
