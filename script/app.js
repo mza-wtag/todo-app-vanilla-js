@@ -13,6 +13,8 @@ import {
 } from "./elements.js";
 
 const todos = [];
+let currentPage = 1;
+const tasksPerPage = 3;
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -73,8 +75,12 @@ const renderTodos = () => {
 
     taskListContainerElement.appendChild(taskCardElement);
 
-    const reversedTodos = todos.slice().reverse();
-    reversedTodos.forEach((task) => {
+    const startIndex = 0;
+    const endIndex = startIndex + tasksPerPage * currentPage;
+
+    const visibleTodos = todos.slice(startIndex, endIndex).reverse();
+    console.log(visibleTodos);
+    visibleTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
         if (task.isCompleted) {
@@ -82,10 +88,19 @@ const renderTodos = () => {
                 ".task-card__icon--complete"
             );
             completeButton.style.display = "none";
+
             const editButton = taskCard.querySelector(".task-card__icon--edit");
             editButton.style.display = "none";
         }
     });
+
+    const morePages = endIndex < todos.length;
+    loadMoreButton.style.display = morePages ? "block" : "none";
+    showLessButton.style.display = morePages
+        ? "none"
+        : currentPage > 1
+        ? "block"
+        : "none";
 };
 
 const addTodo = (title) => {
@@ -113,13 +128,26 @@ const validateAndAddTodo = () => {
     addTodo(title);
 };
 
-addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
+addNewTaskButtonElement.addEventListener("click", () => {
+    validateAndAddTodo();
+    renderTodos();
+});
 
 taskInputElement.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         event.preventDefault();
         validateAndAddTodo();
     }
+});
+
+loadMoreButton.addEventListener("click", () => {
+    currentPage++;
+    renderTodos();
+});
+
+showLessButton.addEventListener("click", () => {
+    currentPage--;
+    renderTodos();
 });
 
 const deleteTodo = (taskId) => {
@@ -198,56 +226,5 @@ const editTodo = (taskId) => {
     inputElement.focus();
 };
 
-let currentPage = 1;
-let todosPerPage = 3;
-hideLoadMoreButton();
-hideShowLessButton();
-
-function showTasks() {
-    const start = 0;
-    const end = start + todosPerPage * currentPage;
-    const tasksToShow = todos.slice(start, end);
-    renderTodos(tasksToShow);
-
-    if (end < todos.length) {
-        showLoadMoreButton();
-        hideShowLessButton();
-    } else {
-        hideLoadMoreButton();
-        if (currentPage > 1) {
-            showShowLessButton();
-        }
-    }
-}
-
-function showLoadMoreButton() {
-    loadMoreButton.style.display = "block";
-    loadMoreButton.addEventListener("click", loadMoreTasks);
-}
-
-function hideLoadMoreButton() {
-    loadMoreButton.style.display = "none";
-}
-
-function showShowLessButton() {
-    showLessButton.style.display = "block";
-    showLessButton.addEventListener("click", showLessTasks);
-}
-
-function hideShowLessButton() {
-    showLessButton.style.display = "none";
-}
-
-function loadMoreTasks() {
-    currentPage++;
-    showTasks();
-}
-
-function showLessTasks() {
-    hideShowLessButton();
-    showLoadMoreButton();
-    const tasksToShow = todos.slice(0, todosPerPage);
-    renderTodos(tasksToShow);
-}
-
-showTasks();
+// Initial rendering
+renderTodos();
