@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/css/style.css" />
+        <title>ToDo App</title>
+    </head>
+    <body>
+        <header class="header">
+            <div class="header__container">
+                <nav class="header__nav">
+                    <div class="header__logo">
+                        <div class="header__logo-img">
+                            <img src="/images/leaf-1.png" alt="leaf" />
+                        </div>
+                        <div class="header__logo-text">ToDos</div>
+                    </div>
+                    <div class="header__search-input">
+                        <input type="text" placeholder="search todo" />
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <section class="task-board">
+            <h1 class="task-board__heading">Add Tasks</h1>
+            <div class="task-board__action-wrapper">
+                <button id="create-task" class="btn btn--primary">
+                    + Create Task
+                </button>
+                <div class="task-board__filter-buttons">
+                    <button class="btn">All</button>
+                    <button class="btn">Incomplete</button>
+                    <button class="btn">Complete</button>
+                </div>
+            </div>
+            <div class="task-list">
+                <div class="task-list__container">
+                    <div
+                        id="task-card-create"
+                        class="task-card task-card--hidden"
+                    >
+                        <input type="text" class="task-card__input" />
+                        <button id="add-task-button" class="btn">
+                            Add Task
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="/script/app.js" type="module"></script>
+    </body>
+</html>
