@@ -152,7 +152,9 @@ const editTodo = (taskId) => {
     const inputElement = document.createElement("input");
     inputElement.type = "text";
     inputElement.value = task.title;
-    titleElement.replaceWith(inputElement);
+    if (titleElement) {
+        titleElement.parentNode.replaceChild(inputElement, titleElement);
+    }
 
     const editButton = taskElement.querySelector(".task-card__icon--edit");
     editButton.innerText = "Save";
