@@ -33,11 +33,17 @@ const getTodoCard = (task) => {
     element.innerHTML = `
         <h1>${task.title}</h1>
        <p>Created At: ${formatDate()}</p>
-        <button class="task-card__icon">Complete</button>
-        <button class="task-card__icon">Edit</button>
-        <button class="task-card__icon">Delete</button>
+        <button class="task-card__icon task-card__icon--complete">Complete</button>
+        <button class="task-card__icon task-card__icon--edit">Edit</button>
+        <button class="task-card__icon task-card__icon-delete">Delete</button>
       `;
 
+    const deleteButton = element.querySelector(".task-card__icon-delete");
+    deleteButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to delete this task?")) {
+            deleteTodo(task.id);
+        }
+    });
     return element;
 };
 
@@ -77,6 +83,7 @@ const validateAndAddTodo = () => {
 
     addTodo(title);
 };
+
 addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
 
 if (validateAndAddTodo) {
@@ -87,3 +94,11 @@ if (validateAndAddTodo) {
         }
     });
 }
+
+const deleteTodo = (taskId) => {
+    const index = todos.findIndex((task) => task.id === taskId);
+    if (index !== -1) {
+        todos.splice(index, 1);
+        renderTodos();
+    }
+};
