@@ -171,12 +171,23 @@ const editTodo = (taskId) => {
         editButton.removeEventListener("click", saveHandler);
     };
 
+    const completeHandler = () => {
+        saveHandler();
+        completeTodo(task.id);
+    };
+
     editButton.addEventListener("click", saveHandler);
+
+    const completeButton = taskElement.querySelector(
+        ".task-card__icon--complete"
+    );
+    completeButton.addEventListener("click", completeHandler);
 
     const deleteHandler = () => {
         renderTodos();
         editButton.innerText = "Edit";
         editButton.removeEventListener("click", saveHandler);
+        completeButton.removeEventListener("click", completeHandler);
     };
 
     const deleteButton = taskElement.querySelector(".task-card__icon--delete");
