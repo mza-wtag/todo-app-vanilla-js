@@ -35,9 +35,9 @@ const getTodoCard = (task) => {
         <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
         <p>Created At: ${formatDate()}</p>
         
-        <button class="task-card__icon" id="complete">Complete</button>
-        <button class="task-card__icon" id="edit">Edit</button>
-        <button class="task-card__icon" id="delete">Delete</button>
+        <button class="task-card__icon task-card__icon--complete">Complete</button>
+        <button class="task-card__icon task-card__icon--edit">Edit</button>
+        <button class="task-card__icon task-card__icon--delete">Delete</button>
         ${
             task.isCompleted
                 ? `<p>Completed In: ${task.completedInDays} ${
@@ -46,14 +46,14 @@ const getTodoCard = (task) => {
                 : ""
         }
     `;
-    const completeButton = element.querySelector("#complete");
+    const completeButton = element.querySelector(".task-card__icon--complete");
     completeButton.addEventListener("click", () => {
         if (!task.isCompleted) {
             completeTodo(task.id);
         }
     });
 
-    const deleteButton = element.querySelector("#delete");
+    const deleteButton = element.querySelector(".task-card__icon--delete");
     deleteButton.addEventListener("click", () => {
         if (confirm("Are you sure you want to delete this task?")) {
             deleteTodo(task.id);
@@ -72,9 +72,11 @@ const renderTodos = () => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
         if (task.isCompleted) {
-            const completeButton = taskCard.querySelector("#complete");
+            const completeButton = taskCard.querySelector(
+                ".task-card__icon--complete"
+            );
             completeButton.style.display = "none";
-            const editButton = taskCard.querySelector("#edit");
+            const editButton = taskCard.querySelector(".task-card__icon--edit");
             editButton.style.display = "none";
         }
     });
