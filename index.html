@@ -22,38 +22,34 @@
                 </nav>
             </div>
         </header>
+
         <section class="task-board">
-            <div class="task-board__container">
-                <h1 class="task-board__title">Add Tasks</h1>
-                <div class="task-board__button-area">
-                    <button
-                        class="task-board__button task-board__button--create"
+            <h1 class="task-board__heading">Add Tasks</h1>
+            <div class="task-board__action-wrapper">
+                <button id="create-task" class="btn btn--primary">
+                    + Create Task
+                </button>
+                <div class="task-board__filter-buttons">
+                    <button class="btn">All</button>
+                    <button class="btn">Incomplete</button>
+                    <button class="btn">Complete</button>
+                </div>
+            </div>
+            <div class="task-list">
+                <div class="task-list__container">
+                    <div
+                        id="task-card-create"
+                        class="task-card task-card--hidden"
                     >
-                        +Create Task
-                    </button>
-                    <div class="task-board__button-wrapper">
-                        <button class="task-board__button">All</button>
-                        <button class="task-board__button">Incomplete</button>
-                        <button class="task-board__button">Complete</button>
+                        <input type="text" class="task-card__input" />
+                        <button id="add-task-button" class="btn">
+                            Add Task
+                        </button>
                     </div>
                 </div>
+                <button id="loadMoreButton">Load More</button>
+                <button id="showLessButton">Show Less</button>
             </div>
-        </section>
-        <section class="task">
-            <div class="task__container">
-                <div id="task-input" class="task__card">
-                    <input type="text" class="task__input" />
-                    <button class="task-board__button task-board__button--add">
-                        Add Task
-                    </button>
-                </div>
-            </div>
-            <button class="task-board__button task-board__button--load-more">
-                Load more
-            </button>
-            <button class="task-board__button task-board__button--Show-less">
-                Show Less
-            </button>
         </section>
         <script src="/script/app.js" type="module"></script>
     </body>

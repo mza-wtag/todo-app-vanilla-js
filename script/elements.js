@@ -1,13 +1,10 @@
-export const addToDoButton = document.querySelector(".task-board__button--add");
-export const toDoContainer = document.querySelector(".todo__container");
-export const todoInput = document.querySelector(".task__input");
-export const createTask = document.querySelector(".task-board__button--create");
-export const taskCardNew = document.querySelector(".task__card-new");
-export const taskContainer = document.querySelector(".task__container");
-export const taskCard = document.querySelector(".task__card");
-export const loadMoreButton = document.querySelector(
-    ".task-board__button--load-more"
+export const toggleButtonToCreateTask = document.getElementById("create-task");
+export const taskCardElement = document.getElementById("task-card-create");
+export const taskInputElement = document.querySelector(".task-card__input");
+export const addNewTaskButtonElement =
+    document.getElementById("add-task-button");
+export const taskListContainerElement = document.querySelector(
+    ".task-list__container"
 );
-export const showLessButton = document.querySelector(
-    ".task-board__button--Show-less"
-);
+export const loadMoreButton = document.getElementById("loadMoreButton");
+export const showLessButton = document.getElementById("showLessButton");
