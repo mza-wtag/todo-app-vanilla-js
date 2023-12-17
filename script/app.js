@@ -33,12 +33,12 @@ const getTodoCard = (task) => {
     element.innerHTML = `
         <h1>${task.title}</h1>
        <p>Created At: ${formatDate()}</p>
-        <button class="task-card__icon" id="complete">Complete</button>
-        <button class="task-card__icon" id="edit">Edit</button>
-        <button class="task-card__icon" id="delete">Delete</button>
+        <button class="task-card__icon task-card__icon--complete" id="complete">Complete</button>
+        <button class="task-card__icon task-card__icon--edit" id="edit">Edit</button>
+        <button class="task-card__icon task-card__icon-delete" id="delete">Delete</button>
       `;
 
-    const deleteButton = element.querySelector("#delete");
+    const deleteButton = element.querySelector(".task-card__icon-delete");
     deleteButton.addEventListener("click", () => {
         if (confirm("Are you sure you want to delete this task?")) {
             deleteTodo(task.id);
