@@ -78,9 +78,10 @@ const renderTodos = () => {
             const completeButton = taskCard.querySelector(
                 ".task-card__icon--complete"
             );
-            completeButton.style.display = "none";
             const editButton = taskCard.querySelector(".task-card__icon--edit");
-            editButton.style.display = "none";
+            task.isCompleted &&
+                (completeButton.style.display = editButton.style.display =
+                    "none");
         }
     });
 };
