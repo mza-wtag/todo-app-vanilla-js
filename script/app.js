@@ -10,7 +10,7 @@ import {
     taskListContainerElement,
 } from "./elements.js";
 
-const todos = [];
+let todos = [];
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -25,26 +25,25 @@ toggleButtonToCreateTask.addEventListener("click", () => {
         : "Hide task";
 });
 
+const getCompletionInfo = (task) =>
+    task.isCompleted
+        ? `<p>Completed In: ${task.completedInDays} ${
+              task.completedInDays < 2 ? "day" : "days"
+          }</p>`
+        : "";
+
 const getTodoCard = (task) => {
     const element = document.createElement("div");
-
+    const completionInfo = getCompletionInfo(task);
     element.classList.add("task-card");
     element.setAttribute("id", `task-${task.id}`);
-
     element.innerHTML = `
-        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
+        <h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
         <p>Created At: ${formatDate()}</p>
-        
         <button class="task-card__icon task-card__icon--complete">Complete</button>
         <button class="task-card__icon task-card__icon--edit">Edit</button>
         <button class="task-card__icon task-card__icon--delete">Delete</button>
-        ${
-            task.isCompleted
-                ? `<p>Completed In: ${task.completedInDays} ${
-                      task.completedInDays < 2 ? "day" : "days"
-                  }</p>`
-                : ""
-        }
+        ${completionInfo}
     `;
     const completeButton = element.querySelector(".task-card__icon--complete");
     completeButton.addEventListener("click", () => {
@@ -127,12 +126,20 @@ const deleteTodo = (taskId) => {
 };
 
 const completeTodo = (taskId) => {
-    const task = todos.find((task) => task.id === taskId);
-
-    if (task && !task.isCompleted) {
-        task.isCompleted = true;
-        task.completedAt = new Date().getTime();
-        task.completedInDays = calculateDays(task.completedAt, task.createdAt);
-        renderTodos();
-    }
+    const updatedTodos = todos.map((task) => {
+        if (task.id === taskId && !task.isCompleted) {
+            return {
+                ...task,
+                isCompleted: true,
+                completedAt: new Date().getTime(),
+                completedInDays: calculateDays(
+                    new Date().getTime(),
+                    task.createdAt
+                ),
+            };
+        }
+        return task;
+    });
+    todos = updatedTodos;
+    renderTodos();
 };
