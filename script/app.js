@@ -161,7 +161,6 @@ const editTodo = (taskId) => {
 
     const editButton = taskElement.querySelector(".task-card__icon--edit");
     editButton.innerText = "Save";
-    let updatedTitle = task.title;
 
     const saveHandler = () => {
         const updatedTitle = sanitizeInput(inputElement.value.trim());
@@ -171,17 +170,18 @@ const editTodo = (taskId) => {
             return;
         }
 
-        task.title = updatedTitle;
+        const updatedTodos = [...todos];
+        const taskToUpdate = updatedTodos.find((task) => task.id === taskId);
+        taskToUpdate.title = updatedTitle;
+        todos = updatedTodos;
         renderTodos();
         editButton.innerText = "Edit";
         editButton.removeEventListener("click", saveHandler);
     };
 
     const completeHandler = () => {
-        if (!task.isCompleted && updatedTitle) {
-            task.title = updatedTitle;
-            completeTodo(task.id);
-        }
+        saveHandler();
+        completeTodo(task.id);
     };
 
     editButton.addEventListener("click", saveHandler);
