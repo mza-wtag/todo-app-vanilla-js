@@ -40,8 +40,8 @@ const getTodoCard = (task) => {
     element.innerHTML = `
         <h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
         <p>Created At: ${formatDate()}</p>
-        <button class="task-card__icon task-card__icon--complete">Complete</button>
-        <button class="task-card__icon task-card__icon--edit">Edit</button>
+        <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
+        <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
         <button class="task-card__icon task-card__icon--delete">Delete</button>
         ${completionInfo}
     `;
@@ -74,15 +74,10 @@ const renderTodos = () => {
     reversedTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
-        if (task.isCompleted) {
-            const completeButton = taskCard.querySelector(
-                ".task-card__icon--complete"
-            );
-            const editButton = taskCard.querySelector(".task-card__icon--edit");
-            task.isCompleted &&
-                (completeButton.style.display = editButton.style.display =
-                    "none");
-        }
+
+        const commonBtns = taskCard.querySelectorAll(".hideBtn");
+        task.isCompleted &&
+            commonBtns.forEach((btn) => (btn.style.display = "none"));
     });
 };
 
