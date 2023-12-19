@@ -12,7 +12,7 @@ import {
     showLessButton,
 } from "./elements.js";
 
-const todos = [];
+let todos = [];
 let currentPage = 1;
 const tasksPerPage = 3;
 
@@ -29,26 +29,25 @@ toggleButtonToCreateTask.addEventListener("click", () => {
         : "Hide task";
 });
 
+const getCompletionInfo = (task) =>
+    task.isCompleted
+        ? `<p>Completed In: ${task.completedInDays} ${
+              task.completedInDays < 2 ? "day" : "days"
+          }</p>`
+        : "";
+
 const getTodoCard = (task) => {
     const element = document.createElement("div");
-
+    const completionInfo = getCompletionInfo(task);
     element.classList.add("task-card");
     element.setAttribute("id", `task-${task.id}`);
-
     element.innerHTML = `
-        <h1 class="${task.isCompleted ? "completed" : ""}">${task.title}</h1>
-        <p>Created At: ${formatDate(task.createdAt)}</p>
-        
-        <button class="task-card__icon task-card__icon--complete">Complete</button>
-        <button class="task-card__icon task-card__icon--edit">Edit</button>
+        <h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
+        <p>Created At: ${formatDate()}</p>
+        <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
+        <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
         <button class="task-card__icon task-card__icon--delete">Delete</button>
-        ${
-            task.isCompleted
-                ? `<p>Completed In: ${task.completedInDays} ${
-                      task.completedInDays < 2 ? "day" : "days"
-                  }</p>`
-                : ""
-        }
+        ${completionInfo}
     `;
     const editButton = element.querySelector(".task-card__icon--edit");
     editButton.addEventListener("click", () => editTodo(task.id));
@@ -76,22 +75,17 @@ const renderTodos = () => {
     taskListContainerElement.appendChild(taskCardElement);
 
     const startIndex = 0;
-    const endIndex = startIndex + tasksPerPage * currentPage;
+    const endIndex = tasksPerPage * currentPage;
 
-    const visibleTodos = todos.slice(startIndex, endIndex).reverse();
+    const visibleTodos = todos.slice(startIndex, endIndex);
     console.log(visibleTodos);
     visibleTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
-        if (task.isCompleted) {
-            const completeButton = taskCard.querySelector(
-                ".task-card__icon--complete"
-            );
-            completeButton.style.display = "none";
 
-            const editButton = taskCard.querySelector(".task-card__icon--edit");
-            editButton.style.display = "none";
-        }
+        const commonBtns = taskCard.querySelectorAll(".hideBtn");
+        task.isCompleted &&
+            commonBtns.forEach((btn) => (btn.style.display = "none"));
     });
 
     const morePages = endIndex < todos.length;
@@ -111,7 +105,7 @@ const addTodo = (title) => {
         createdAt: new Date().getTime(),
     };
 
-    todos.push(newTask);
+    todos.unshift(newTask);
     renderTodos();
     taskInputElement.value = "";
     taskInputElement.focus();
@@ -146,7 +140,7 @@ loadMoreButton.addEventListener("click", () => {
 });
 
 showLessButton.addEventListener("click", () => {
-    currentPage--;
+    currentPage = 1;
     renderTodos();
 });
 
@@ -159,14 +153,22 @@ const deleteTodo = (taskId) => {
 };
 
 const completeTodo = (taskId) => {
-    const task = todos.find((task) => task.id === taskId);
-
-    if (task && !task.isCompleted) {
-        task.isCompleted = true;
-        task.completedAt = new Date().getTime();
-        task.completedInDays = calculateDays(task.completedAt, task.createdAt);
-        renderTodos();
-    }
+    const updatedTodos = todos.map((task) => {
+        if (task.id === taskId && !task.isCompleted) {
+            return {
+                ...task,
+                isCompleted: true,
+                completedAt: new Date().getTime(),
+                completedInDays: calculateDays(
+                    new Date().getTime(),
+                    task.createdAt
+                ),
+            };
+        }
+        return task;
+    });
+    todos = updatedTodos;
+    renderTodos();
 };
 
 const editTodo = (taskId) => {
@@ -197,7 +199,10 @@ const editTodo = (taskId) => {
             return;
         }
 
-        task.title = updatedTitle;
+        const updatedTodos = [...todos];
+        const taskToUpdate = updatedTodos.find((task) => task.id === taskId);
+        taskToUpdate.title = updatedTitle;
+        todos = updatedTodos;
         renderTodos();
         editButton.innerText = "Edit";
         editButton.removeEventListener("click", saveHandler);
@@ -228,5 +233,4 @@ const editTodo = (taskId) => {
     inputElement.focus();
 };
 
-// Initial rendering
 renderTodos();

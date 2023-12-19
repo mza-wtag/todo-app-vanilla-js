@@ -1,6 +1,5 @@
-export function calculateDays(startDate, endDate) {
-    const start = new Date(startDate).getTime();
-    const end = new Date(endDate).getTime();
-    const diffInMilliseconds = Math.abs(end - start);
-    return Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24));
-}
+export const calculateDays = (endTime, startTime) => {
+    const millisecondsInADay = 24 * 60 * 60 * 1000;
+    const timeDifference = endTime - startTime;
+    return Math.ceil(timeDifference / millisecondsInADay);
+};
