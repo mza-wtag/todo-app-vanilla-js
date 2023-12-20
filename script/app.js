@@ -24,7 +24,7 @@ import {
 
 let todos = [];
 let currentPage = 1;
-const tasksPerPage = 3;
+const tasksPerPage = 9;
 let currentFilter = "All";
 
 const toggleSearch = () => {
