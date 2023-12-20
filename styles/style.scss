@@ -82,3 +82,36 @@
     text-decoration: line-through;
     opacity: 0.5;
 }
+
+.toast-container {
+    height: 55px;
+    left: 900px;
+    max-width: 390px;
+    position: fixed;
+    top: 10px;
+    z-index: 1000;
+}
+
+.toast {
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    opacity: 0;
+    padding: 12px 20px;
+    transition: opacity 0.3s ease-in-out;
+
+    &.success {
+        background-color: $success-color;
+    }
+
+    &.error {
+        background-color: $error-color;
+    }
+
+    &.danger {
+        background-color: $danger-color;
+    }
+}
