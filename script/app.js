@@ -22,9 +22,10 @@ import {
     showShowLessButton,
 } from "./helpers/pagination.js";
 
-searchIcon.addEventListener("click", () => {
-    toggleSearch();
-});
+let todos = [];
+let currentPage = 1;
+const tasksPerPage = 3;
+let currentFilter = "All";
 
 const toggleSearch = () => {
     searchInput.style.display =
@@ -33,10 +34,29 @@ const toggleSearch = () => {
             : "none";
 };
 
-let todos = [];
-let currentPage = 1;
-const tasksPerPage = 3;
-let currentFilter = "All";
+searchIcon.addEventListener("click", () => {
+    toggleSearch();
+});
+
+const debounce = (func, delay) => {
+    let timeoutId;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+};
+
+searchInput.addEventListener(
+    "input",
+    debounce(() => {
+        currentPage = 1;
+        renderTodos();
+    }, 300)
+);
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -261,17 +281,28 @@ filterButtons.forEach((button) => {
 });
 
 const filterTasks = () => {
+    const searchTerm = sanitizeInput(searchInput.value.trim().toLowerCase());
+
     switch (currentFilter) {
         case "All":
-            return todos;
+            return todos.filter((task) =>
+                task.title.toLowerCase().includes(searchTerm)
+            );
         case "Incomplete":
-            return todos.filter((task) => !task.isCompleted);
+            return todos.filter(
+                (task) =>
+                    !task.isCompleted &&
+                    task.title.toLowerCase().includes(searchTerm)
+            );
         case "Complete":
-            return todos.filter((task) => task.isCompleted);
+            return todos.filter(
+                (task) =>
+                    task.isCompleted &&
+                    task.title.toLowerCase().includes(searchTerm)
+            );
         default:
             return todos;
     }
 };
 
-// Initial rendering
 renderTodos();
