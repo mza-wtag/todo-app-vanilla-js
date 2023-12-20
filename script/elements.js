@@ -8,3 +8,6 @@ export const taskListContainerElement = document.querySelector(
 );
 export const loadMoreButton = document.querySelector(".btn--loadMoreButton");
 export const showLessButton = document.querySelector(".btn--showLessButton");
+export const filterButtons = document.querySelectorAll(
+    ".task-board__filter-buttons .btn"
+);

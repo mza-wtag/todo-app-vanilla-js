@@ -10,6 +10,7 @@ import {
     taskListContainerElement,
     loadMoreButton,
     showLessButton,
+    filterButtons,
 } from "./elements.js";
 
 import {
@@ -21,7 +22,8 @@ import {
 
 let todos = [];
 let currentPage = 1;
-const tasksPerPage = 9;
+const tasksPerPage = 3;
+let currentFilter = "All";
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -77,10 +79,11 @@ const getTodoCard = (task) => {
 };
 
 const renderTodos = () => {
+    const filteredTodos = filterTasks();
     taskListContainerElement.innerHTML = "";
     taskListContainerElement.appendChild(taskCardElement);
 
-    const visibleTodos = paginate(todos, currentPage, tasksPerPage);
+    const visibleTodos = paginate(filteredTodos, currentPage, tasksPerPage);
 
     visibleTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
@@ -91,9 +94,13 @@ const renderTodos = () => {
             commonBtns.forEach((btn) => (btn.style.display = "none"));
     });
 
-    const morePages = hasMorePages(todos.length, currentPage, tasksPerPage);
+    const morePages = hasMorePages(
+        filteredTodos.length,
+        currentPage,
+        tasksPerPage
+    );
     showLoadMoreButton(morePages);
-    showShowLessButton(currentPage, tasksPerPage, todos.length);
+    showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
 };
 
 loadMoreButton.addEventListener("click", () => {
@@ -232,4 +239,26 @@ const editTodo = (taskId) => {
     inputElement.focus();
 };
 
+filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        currentFilter = button.textContent;
+        currentPage = 1;
+        renderTodos();
+    });
+});
+
+const filterTasks = () => {
+    switch (currentFilter) {
+        case "All":
+            return todos;
+        case "Incomplete":
+            return todos.filter((task) => !task.isCompleted);
+        case "Complete":
+            return todos.filter((task) => task.isCompleted);
+        default:
+            return todos;
+    }
+};
+
+// Initial rendering
 renderTodos();
