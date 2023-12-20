@@ -21,7 +21,7 @@ import {
 
 let todos = [];
 let currentPage = 1;
-const tasksPerPage = 3;
+const tasksPerPage = 9;
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
