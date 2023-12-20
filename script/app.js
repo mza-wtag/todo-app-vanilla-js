@@ -11,6 +11,8 @@ import {
     loadMoreButton,
     showLessButton,
     filterButtons,
+    searchIcon,
+    searchInput,
 } from "./elements.js";
 
 import {
@@ -20,9 +22,20 @@ import {
     showShowLessButton,
 } from "./helpers/pagination.js";
 
+searchIcon.addEventListener("click", () => {
+    toggleSearch();
+});
+
+const toggleSearch = () => {
+    searchInput.style.display =
+        searchInput.style.display === "none" || searchInput.style.display === ""
+            ? "block"
+            : "none";
+};
+
 let todos = [];
 let currentPage = 1;
-const tasksPerPage = 9;
+const tasksPerPage = 3;
 let currentFilter = "All";
 
 toggleButtonToCreateTask.addEventListener("click", () => {

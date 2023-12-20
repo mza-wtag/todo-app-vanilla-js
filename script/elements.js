@@ -11,3 +11,5 @@ export const showLessButton = document.querySelector(".btn--showLessButton");
 export const filterButtons = document.querySelectorAll(
     ".task-board__filter-buttons .btn"
 );
+export const searchIcon = document.querySelector(".searchIcon");
+export const searchInput = document.querySelector(".header__search-input");
