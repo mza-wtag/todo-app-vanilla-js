@@ -260,5 +260,4 @@ const filterTasks = () => {
     }
 };
 
-// Initial rendering
 renderTodos();
