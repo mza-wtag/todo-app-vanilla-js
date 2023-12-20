@@ -12,6 +12,13 @@ import {
     showLessButton,
 } from "./elements.js";
 
+import {
+    paginate,
+    hasMorePages,
+    showLoadMoreButton,
+    showShowLessButton,
+} from "./helpers/pagination.js";
+
 let todos = [];
 let currentPage = 1;
 const tasksPerPage = 3;
@@ -71,14 +78,10 @@ const getTodoCard = (task) => {
 
 const renderTodos = () => {
     taskListContainerElement.innerHTML = "";
-
     taskListContainerElement.appendChild(taskCardElement);
 
-    const startIndex = 0;
-    const endIndex = tasksPerPage * currentPage;
+    const visibleTodos = paginate(todos, currentPage, tasksPerPage);
 
-    const visibleTodos = todos.slice(startIndex, endIndex);
-    console.log(visibleTodos);
     visibleTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
@@ -88,14 +91,20 @@ const renderTodos = () => {
             commonBtns.forEach((btn) => (btn.style.display = "none"));
     });
 
-    const morePages = endIndex < todos.length;
-    loadMoreButton.style.display = morePages ? "block" : "none";
-    showLessButton.style.display = morePages
-        ? "none"
-        : currentPage > 1
-        ? "block"
-        : "none";
+    const morePages = hasMorePages(todos.length, currentPage, tasksPerPage);
+    showLoadMoreButton(morePages);
+    showShowLessButton(currentPage, tasksPerPage, todos.length);
 };
+
+loadMoreButton.addEventListener("click", () => {
+    currentPage++;
+    renderTodos();
+});
+
+showLessButton.addEventListener("click", () => {
+    currentPage = 1;
+    renderTodos();
+});
 
 const addTodo = (title) => {
     const newTask = {
@@ -132,16 +141,6 @@ taskInputElement.addEventListener("keydown", (event) => {
         event.preventDefault();
         validateAndAddTodo();
     }
-});
-
-loadMoreButton.addEventListener("click", () => {
-    currentPage++;
-    renderTodos();
-});
-
-showLessButton.addEventListener("click", () => {
-    currentPage = 1;
-    renderTodos();
 });
 
 const deleteTodo = (taskId) => {
