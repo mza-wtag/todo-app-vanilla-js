@@ -22,6 +22,7 @@ import {
     showLoadMoreButton,
     showShowLessButton,
 } from "./helpers/pagination.js";
+import { files, mark, pencil, plus, trash } from "./helpers/svgImages.js";
 
 let todos = [];
 let currentPage = 1;
@@ -74,9 +75,9 @@ toggleButtonToCreateTask.addEventListener("click", () => {
 
 const getCompletionInfo = (task) =>
     task.isCompleted
-        ? `<p>Completed In: ${task.completedInDays} ${
+        ? `<span>Completed In: ${task.completedInDays} ${
               task.completedInDays < 2 ? "day" : "days"
-          }</p>`
+          }</span>`
         : "";
 
 const getTodoCard = (task) => {
@@ -84,12 +85,15 @@ const getTodoCard = (task) => {
     const completionInfo = getCompletionInfo(task);
     element.classList.add("task-card");
     element.setAttribute("id", `task-${task.id}`);
-    element.innerHTML = `
+    element.innerHTML = ` 
         <h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
-        <p>Created At: ${formatDate()}</p>
-        <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
-        <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
-        <button class="task-card__icon task-card__icon--delete">Delete</button>
+        <span>Created At: ${formatDate()}</span>
+        <div class="task-card__icon-wrapper">
+        <button class="task-card__icon hideBtn task-card__icon--complete"><img src=${mark} alt="complete" /></button>
+        <button class="task-card__icon hideBtn task-card__icon--edit"><img src=${pencil} alt="edit" /></button>
+        <button class="task-card__icon task-card__icon--delete"><img src=${trash} alt="delete" /></button>
+        </div>
+     
         ${completionInfo}
     `;
     const editButton = element.querySelector(".task-card__icon--edit");
@@ -135,6 +139,12 @@ const renderTodos = () => {
     );
     showLoadMoreButton(morePages);
     showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
+    if (todos.length > 0) {
+        const emptyDiv = document.querySelector(".task-list__empty");
+        if (emptyDiv) {
+            emptyDiv.remove();
+        }
+    }
 };
 
 loadMoreButton.addEventListener("click", () => {
@@ -225,6 +235,7 @@ const editTodo = (taskId) => {
     const taskElement = document.getElementById(`task-${task.id}`);
     const titleElement = taskElement.querySelector("h1");
     const inputElement = document.createElement("input");
+    inputElement.classList.add("task-card__input");
     inputElement.type = "text";
     inputElement.value = task.title;
     if (titleElement) {
@@ -232,7 +243,9 @@ const editTodo = (taskId) => {
     }
 
     const editButton = taskElement.querySelector(".task-card__icon--edit");
+    editButton.classList.add("btn");
     editButton.innerText = "Save";
+    editButton.parentElement.prepend(editButton);
 
     const saveHandler = () => {
         const updatedTitle = sanitizeInput(inputElement.value.trim());

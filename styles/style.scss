@@ -3,55 +3,85 @@
 @import "layout";
 
 .header {
+    background-color: #fff;
+    border-bottom: 0.06rem solid #dde2ff;
+    padding: 1rem 2rem;
+    width: 100%;
     &__container {
-        padding: 2rem 1rem;
+        display: flex;
+        justify-content: center;
     }
 
     &__nav {
         align-items: center;
-        background: $secondary-color;
         display: flex;
         justify-content: space-between;
+        width: 80%;
     }
 
     &__logo {
         align-items: center;
         display: flex;
+        gap: 0.8rem;
     }
-
+    &__logo-text {
+        color: $primary-color;
+        font-size: 2.1rem;
+        font-weight: 700;
+    }
     &__search-wrapper {
+        align-items: center;
         display: flex;
+        flex-basis: 50%;
         gap: 1rem;
+        justify-content: end;
     }
 
     &__search-input {
+        border-radius: 0.31rem;
+        border: 2px solid #dde2ff;
         display: none;
+        font-size: 1rem;
+        font-weight: 500;
+        outline: none;
+        padding: 0.56rem 0.75rem;
+        width: 100%;
     }
 }
 
 .task-board {
-    background-color: $secondary-color;
+    margin: 0 auto;
+    width: 77%;
     &__action-wrapper {
         align-items: center;
         display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
         justify-content: space-between;
-        padding: 1rem;
+    }
+    &__filter-buttons {
+        display: flex;
+        gap: 0.7rem;
+    }
+    &__heading {
+        font-size: 1.87rem;
+        font-weight: 700;
+        padding: 2rem 0rem;
     }
 }
 .btn {
-    border-radius: 5px;
-    border: 1px solid $border-color;
+    background-color: $secondary-color;
+    border-radius: 0.31rem;
+    border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: 0.06rem solid $border-color;
+    padding: 0.56rem 1.25rem;
+    text-transform: capitalize;
     &--primary {
         background-color: $primary-color;
         color: $color-white;
-    }
-    &__filter-buttons {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        padding-top: 2rem;
     }
 }
 
@@ -59,13 +89,38 @@
     background-color: $color-white;
     border-radius: 5px;
     border: 1px solid $border-color;
-    height: auto;
-    margin-bottom: 1rem;
-    padding: 4rem 1rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: space-between;
+    min-width: 5%;
+    overflow: hidden;
+    padding: 1rem;
 
     &--hidden {
         display: none;
+    }
+    &__icon-wrapper {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+    }
+    &__icon {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        height: 100%;
+    }
+    &__input {
+        border-radius: 0.31rem;
+        border: 0.03rem solid #dde2ff;
+        font-size: 1rem;
+        font-weight: 500;
+        height: 100%;
+        min-height: 5rem;
+        outline: none;
+        padding: 0.31rem 0.563rem;
+        width: 100%;
     }
 }
 
@@ -73,14 +128,24 @@
     &__container {
         display: grid;
         gap: 1rem 2rem;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        padding: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(382px, 1fr));
+        padding-top: 2rem;
+    }
+
+    &__empty {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        left: 37%;
+        position: absolute;
+        top: 60%;
     }
 }
 
 .completed {
-    text-decoration: line-through;
     opacity: 0.5;
+    text-decoration: line-through;
 }
 
 .toast-container {
