@@ -28,6 +28,9 @@ let currentPage = 1;
 const tasksPerPage = 9;
 let currentFilter = "All";
 let editingId = -1;
+const FILTER_TEXT_ALL = "All";
+const FILTER_TEXT_INCOMPLETE = "Incomplete";
+const FILTER_TEXT_COMPLETE = "Complete";
 
 const toggleSearch = () => {
     searchInput.style.display =
@@ -308,17 +311,17 @@ const filterTasks = () => {
     const searchTerm = sanitizeInput(searchInput.value.trim().toLowerCase());
 
     switch (currentFilter) {
-        case "All":
+        case FILTER_TEXT_ALL:
             return todos.filter((task) =>
                 task.title.toLowerCase().includes(searchTerm)
             );
-        case "Incomplete":
+        case FILTER_TEXT_INCOMPLETE:
             return todos.filter(
                 (task) =>
                     !task.isCompleted &&
                     task.title.toLowerCase().includes(searchTerm)
             );
-        case "Complete":
+        case FILTER_TEXT_COMPLETE:
             return todos.filter(
                 (task) =>
                     task.isCompleted &&
