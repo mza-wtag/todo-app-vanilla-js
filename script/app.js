@@ -137,11 +137,11 @@ const renderTodos = () => {
     );
     showLoadMoreButton(morePages);
     showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
-    if (todos.length > 0) {
-        const emptyDiv = document.querySelector(".task-list__empty");
-        if (emptyDiv) {
-            emptyDiv.remove();
-        }
+    const emptyDiv = document.querySelector(".task-list__empty");
+    if (filteredTodos.length > 0) {
+        emptyDiv.style.display = "none";
+    } else {
+        emptyDiv.style.display = "block";
     }
 };
 
@@ -314,7 +314,7 @@ filterButtons.forEach((button) => {
         button.classList.add("active");
     }
     button.addEventListener("click", () => {
-        button.classList.toggle("active");
+        button.classList.add("active");
         filterButtons.forEach((otherButton) => {
             if (otherButton !== button) {
                 otherButton.classList.remove("active");
