@@ -40,7 +40,7 @@ const getTodoCard = (task) => {
     element.setAttribute("id", `task-${task.id}`);
     element.innerHTML = `
 <h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
-<p>Created At: ${formatDate()}</p>
+<p class="createdAt" >Created At: ${formatDate()}</p>
 <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
 <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
 <button class="task-card__icon task-card__icon--delete">Delete</button>
@@ -159,13 +159,16 @@ const editTodo = (taskId) => {
 
     const taskElement = document.getElementById(`task-${task.id}`);
     const titleElement = taskElement.querySelector("h1");
+    const createdAtElement = taskElement.querySelector(".createdAt");
     const inputElement = document.createElement("input");
     inputElement.type = "text";
     inputElement.value = task.title;
     if (titleElement) {
         titleElement.parentNode.replaceChild(inputElement, titleElement);
     }
-
+    if (createdAtElement) {
+        createdAtElement.style.display = "none";
+    }
     const editButton = taskElement.querySelector(".task-card__icon--edit");
     editButton.innerText = "Save";
 
