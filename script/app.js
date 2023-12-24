@@ -27,6 +27,7 @@ let todos = [];
 let currentPage = 1;
 const tasksPerPage = 9;
 let currentFilter = "All";
+let editingId = -1;
 
 const toggleSearch = () => {
     searchInput.style.display =
@@ -85,13 +86,13 @@ const getTodoCard = (task) => {
     element.classList.add("task-card");
     element.setAttribute("id", `task-${task.id}`);
     element.innerHTML = `
-        <h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
-        <p>Created At: ${formatDate()}</p>
-        <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
-        <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
-        <button class="task-card__icon task-card__icon--delete">Delete</button>
-        ${completionInfo}
-    `;
+<h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
+<p class="createdAt" >Created At: ${formatDate()}</p>
+<button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
+<button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
+<button class="task-card__icon task-card__icon--delete">Delete</button>
+${completionInfo}
+`;
     const editButton = element.querySelector(".task-card__icon--edit");
     editButton.addEventListener("click", () => editTodo(task.id));
 
@@ -104,9 +105,7 @@ const getTodoCard = (task) => {
 
     const deleteButton = element.querySelector(".task-card__icon--delete");
     deleteButton.addEventListener("click", () => {
-        if (confirm("Are you sure you want to delete this task?")) {
-            deleteTodo(task.id);
-        }
+        deleteTodo(task.id);
     });
 
     return element;
@@ -187,7 +186,14 @@ taskInputElement.addEventListener("keydown", (event) => {
 
 const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
-    if (index !== -1) {
+
+    if (index === -1) {
+        return;
+    }
+
+    if (todos[index].id === editingId) {
+        renderTodos();
+    } else if (confirm("Are you sure you want to delete this task?")) {
         todos.splice(index, 1);
         showToast("Task deleted successfully", "danger");
         renderTodos();
@@ -216,6 +222,7 @@ const completeTodo = (taskId) => {
 
 const editTodo = (taskId) => {
     const task = todos.find((task) => task.id === taskId);
+    editingId = task.id;
 
     if (!task) {
         alert("Task not found");
@@ -224,13 +231,16 @@ const editTodo = (taskId) => {
 
     const taskElement = document.getElementById(`task-${task.id}`);
     const titleElement = taskElement.querySelector("h1");
+    const createdAtElement = taskElement.querySelector(".createdAt");
     const inputElement = document.createElement("input");
     inputElement.type = "text";
     inputElement.value = task.title;
     if (titleElement) {
         titleElement.parentNode.replaceChild(inputElement, titleElement);
     }
-
+    if (createdAtElement) {
+        createdAtElement.style.display = "none";
+    }
     const editButton = taskElement.querySelector(".task-card__icon--edit");
     editButton.innerText = "Save";
 
@@ -250,6 +260,10 @@ const editTodo = (taskId) => {
         renderTodos();
         editButton.innerText = "Edit";
         editButton.removeEventListener("click", saveHandler);
+        if (editingId === task.id) {
+            editingId = -1;
+            renderTodos();
+        }
     };
 
     const completeHandler = () => {
@@ -265,16 +279,20 @@ const editTodo = (taskId) => {
     completeButton.addEventListener("click", completeHandler);
 
     const deleteHandler = () => {
-        showToast("Task deleted successfully", "danger");
-        renderTodos();
-        editButton.innerText = "Edit";
-        editButton.removeEventListener("click", saveHandler);
-        completeButton.removeEventListener("click", completeHandler);
+        if (editingId === task.id) {
+            editingId = -1;
+            renderTodos();
+        } else {
+            if (confirm("Are you sure you want to delete this task?")) {
+                todos = todos.filter((task) => task.id !== taskId);
+                showToast("Task deleted successfully", "danger");
+                renderTodos();
+            }
+        }
     };
 
     const deleteButton = taskElement.querySelector(".task-card__icon--delete");
     deleteButton.addEventListener("click", deleteHandler);
-
     inputElement.focus();
 };
 
