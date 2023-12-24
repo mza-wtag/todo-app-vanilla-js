@@ -141,10 +141,18 @@ const renderTodos = () => {
     showLoadMoreButton(morePages);
     showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
     const emptyDiv = document.querySelector(".task-list__empty");
+    const emptySms = document.querySelector(".task-list__empty-message");
     if (filteredTodos.length > 0) {
         emptyDiv.style.display = "none";
+    } else if (
+        filteredTodos.length === 0 &&
+        currentFilter === FILTER_TEXT_COMPLETE
+    ) {
+        emptySms.innerText = "You didn't complete any task.";
+        emptyDiv.style.display = "block";
     } else {
         emptyDiv.style.display = "block";
+        emptySms.innerText = "You didn't add any task. Please,add,one.";
     }
 };
 
