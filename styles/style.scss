@@ -68,7 +68,11 @@
         font-weight: 700;
         padding: 2rem 0rem;
     }
+    .active {
+        color: $primary-color;
+    }
 }
+
 .btn {
     background-color: $secondary-color;
     border-radius: 0.31rem;
@@ -139,13 +143,25 @@
         gap: 2rem;
         left: 37%;
         position: absolute;
-        top: 60%;
+        top: 52%;
     }
 }
 
 .completed {
     opacity: 0.5;
     text-decoration: line-through;
+    color: $success-color;
+}
+
+.complete-info {
+    background-color: #7a8dfd;
+    border-radius: 0.31rem;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 0.875rem;
+    margin-left: 60%;
+    padding: 0.31rem 0.75rem;
 }
 
 .toast-container {

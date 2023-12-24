@@ -76,7 +76,7 @@ toggleButtonToCreateTask.addEventListener("click", () => {
 
 const getCompletionInfo = (task) =>
     task.isCompleted
-        ? `<span>Completed In: ${task.completedInDays} ${
+        ? `<span class="complete-info" >Completed In: ${task.completedInDays} ${
               task.completedInDays < 2 ? "day" : "days"
           }</span>`
         : "";
@@ -93,9 +93,8 @@ const getTodoCard = (task) => {
         <button class="task-card__icon hideBtn task-card__icon--complete"><img src=${mark} alt="complete" /></button>
         <button class="task-card__icon hideBtn task-card__icon--edit"><img src=${pencil} alt="edit" /></button>
         <button class="task-card__icon task-card__icon--delete"><img src=${trash} alt="delete" /></button>
-        </div>
-     
         ${completionInfo}
+        </div>   
     `;
     const editButton = element.querySelector(".task-card__icon--edit");
     editButton.addEventListener("click", () => editTodo(task.id));
@@ -310,7 +309,17 @@ const editTodo = (taskId) => {
 };
 
 filterButtons.forEach((button) => {
+    const isAllButton = button.textContent === "All";
+    if (isAllButton) {
+        button.classList.add("active");
+    }
     button.addEventListener("click", () => {
+        button.classList.toggle("active");
+        filterButtons.forEach((otherButton) => {
+            if (otherButton !== button) {
+                otherButton.classList.remove("active");
+            }
+        });
         currentFilter = button.textContent;
         currentPage = 1;
         renderTodos();
