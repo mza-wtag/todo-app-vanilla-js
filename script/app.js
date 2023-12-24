@@ -25,6 +25,9 @@ let currentPage = 1;
 const tasksPerPage = 9;
 let currentFilter = "All";
 let editingId = -1;
+const FILTER_TEXT_ALL = "All";
+const FILTER_TEXT_INCOMPLETE = "Incomplete";
+const FILTER_TEXT_COMPLETE = "Complete";
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -267,11 +270,11 @@ filterButtons.forEach((button) => {
 
 const filterTasks = () => {
     switch (currentFilter) {
-        case "All":
+        case FILTER_TEXT_ALL:
             return todos;
-        case "Incomplete":
+        case FILTER_TEXT_INCOMPLETE:
             return todos.filter((task) => !task.isCompleted);
-        case "Complete":
+        case FILTER_TEXT_COMPLETE:
             return todos.filter((task) => task.isCompleted);
         default:
             return todos;
