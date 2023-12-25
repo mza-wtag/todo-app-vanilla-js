@@ -22,7 +22,7 @@ import {
     showLoadMoreButton,
     showShowLessButton,
 } from "./helpers/pagination.js";
-import { files, mark, pencil, plus, trash } from "./helpers/svgImages.js";
+import { mark, pencil, plus, trash } from "./helpers/svgImages.js";
 
 let todos = [];
 let currentPage = 1;
@@ -72,9 +72,9 @@ toggleButtonToCreateTask.addEventListener("click", () => {
         hiddenTaskCardClassname
     );
 
-    toggleButtonToCreateTask.innerText = isTaskCardHidden
-        ? "+ Create task"
-        : "Hide task";
+    toggleButtonToCreateTask.innerHTML = isTaskCardHidden
+        ? `<img src=${plus} alt="plus"> Create`
+        : "Hide";
 });
 
 const getCompletionInfo = (task) =>
