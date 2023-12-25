@@ -162,12 +162,12 @@
     }
 
     &__empty {
-        display: flex;
         left: 37%;
         position: absolute;
         top: 52%;
         img {
             max-width: 100%;
+            margin-left: 15%;
         }
     }
 
@@ -207,6 +207,7 @@
 
     &--error {
         background-color: $error-color;
+        color: $color-black;
     }
 
     &--danger {

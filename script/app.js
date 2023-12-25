@@ -183,9 +183,8 @@ const addTodo = (title) => {
 
 const validateAndAddTodo = () => {
     const title = sanitizeInput(taskInputElement.value.trim());
-
     if (!title) {
-        alert("Task title is required.");
+        showToast("Task title is required.", "error");
         return;
     }
 
