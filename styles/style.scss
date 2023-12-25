@@ -186,35 +186,30 @@
     text-decoration: line-through;
 }
 
-.toast-container {
-    height: 3.4375rem;
-    left: 56.25rem;
-    max-width: 24.375rem;
-    position: fixed;
-    top: 0.625rem;
-    z-index: 1000;
-}
-
-.toast {
+.toastMessage {
     border-radius: 0.3125rem;
     color: $color-white;
     cursor: pointer;
     font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 0.625rem;
-    opacity: 0;
+    height: 3.4375rem;
+    left: 43%;
+    max-width: 24.375rem;
     padding: 0.75rem 1.25rem;
+    position: absolute;
+    top: 0.625rem;
     transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
 
-    &.success {
+    &--success {
         background-color: $success-color;
     }
 
-    &.error {
+    &--error {
         background-color: $error-color;
     }
 
-    &.danger {
+    &--danger {
         background-color: $danger-color;
     }
 }

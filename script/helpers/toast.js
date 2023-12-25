@@ -1,10 +1,10 @@
-import { toastContainer } from "./../../script/elements.js";
+import { toastContainer } from "/script/elements.js";
 
 export const showToast = (message, type) => {
-    const existingToasts = document.querySelectorAll(".toast");
+    const existingToasts = document.querySelectorAll(".toastMessage");
     existingToasts.forEach((existingToast) => existingToast.remove());
     const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
+    toast.className = `toastMessage toastMessage--${type}`;
     toast.textContent = message;
     toastContainer.appendChild(toast);
     toast.offsetHeight;
@@ -16,5 +16,5 @@ export const showToast = (message, type) => {
         setTimeout(() => {
             toast.remove();
         }, 300);
-    }, 3000);
+    }, 300);
 };
