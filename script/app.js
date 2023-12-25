@@ -39,8 +39,8 @@ const getTodoCard = (task) => {
     element.classList.add("task-card");
     element.setAttribute("id", `task-${task.id}`);
     element.innerHTML = `
-<h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
-<p class="createdAt" >Created At: ${formatDate()}</p>
+<h1 class="${task.isCompleted && "task-card--completed"}">${task.title}</h1>
+<p class="task-card__createdAt" >Created At: ${formatDate()}</p>
 <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
 <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
 <button class="task-card__icon task-card__icon--delete">Delete</button>
