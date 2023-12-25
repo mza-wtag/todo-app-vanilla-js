@@ -26,7 +26,7 @@ import { files, mark, pencil, plus, trash } from "./helpers/svgImages.js";
 
 let todos = [];
 let currentPage = 1;
-const tasksPerPage = 9;
+const tasksPerPage = 3;
 let currentFilter = "All";
 let editingId = -1;
 const FILTER_TEXT_ALL = "All";
@@ -142,10 +142,10 @@ const renderTodos = () => {
     showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
     const emptyDiv = document.querySelector(".task-list__empty");
     const emptySms = document.querySelector(".task-list__empty-message");
-    if (filteredTodos.length > 0) {
+    if (visibleTodos.length > 0) {
         emptyDiv.style.display = "none";
     } else if (
-        filteredTodos.length === 0 &&
+        visibleTodos.length === 0 &&
         currentFilter === FILTER_TEXT_COMPLETE
     ) {
         emptySms.innerText = "You didn't complete any task.";

@@ -3,8 +3,8 @@
 @import "layout";
 
 .header {
-    background-color: #fff;
-    border-bottom: 0.06rem solid #dde2ff;
+    background-color: $color-white;
+    border-bottom: 0.06rem solid $border-color;
     padding: 1rem 2rem;
     width: 100%;
     &__container {
@@ -39,7 +39,7 @@
 
     &__search-input {
         border-radius: 0.31rem;
-        border: 2px solid #dde2ff;
+        border: 0.125rem solid $border-color;
         display: none;
         font-size: 1rem;
         font-weight: 500;
@@ -87,12 +87,17 @@
         background-color: $primary-color;
         color: $color-white;
     }
+    &--loadMoreButton,
+    &--showLessButton {
+        background-color: $color-black;
+        color: $color-white;
+    }
 }
 
 .task-card {
     background-color: $color-white;
-    border-radius: 5px;
-    border: 1px solid $border-color;
+    border-radius: 0.3125rem;
+    border: 0.0625rem solid $border-color;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -117,7 +122,7 @@
     }
     &__input {
         border-radius: 0.31rem;
-        border: 0.03rem solid #dde2ff;
+        border: 0.03rem solid $border-color;
         font-size: 1rem;
         font-weight: 500;
         height: 100%;
@@ -126,13 +131,19 @@
         padding: 0.31rem 0.563rem;
         width: 100%;
     }
+    .createdAt {
+        font-size: 0.875rem;
+        font-weight: 700;
+        line-height: 1rem;
+        color: $light-color;
+    }
 }
 
 .task-list {
     &__container {
         display: grid;
         gap: 1rem 2rem;
-        grid-template-columns: repeat(auto-fill, minmax(382px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(23.875rem, 1fr));
         padding-top: 2rem;
     }
 
@@ -145,18 +156,25 @@
         position: absolute;
         top: 52%;
     }
+    &__paginate-buttons {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-top: 3.56rem;
+        padding: 1rem;
+    }
 }
 
 .completed {
+    color: $success-color;
     opacity: 0.5;
     text-decoration: line-through;
-    color: $success-color;
 }
 
 .complete-info {
-    background-color: #7a8dfd;
+    background-color: $primary-color;
     border-radius: 0.31rem;
-    color: #fff;
+    color: $color-white;
     font-size: 0.75rem;
     font-weight: 700;
     line-height: 0.875rem;
@@ -165,23 +183,23 @@
 }
 
 .toast-container {
-    height: 55px;
-    left: 900px;
-    max-width: 390px;
+    height: 3.4375rem;
+    left: 56.25rem;
+    max-width: 24.375rem;
     position: fixed;
-    top: 10px;
+    top: 0.625rem;
     z-index: 1000;
 }
 
 .toast {
-    border-radius: 5px;
-    color: #fff;
+    border-radius: 0.3125rem;
+    color: $color-white;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
     opacity: 0;
-    padding: 12px 20px;
+    padding: 0.75rem 1.25rem;
     transition: opacity 0.3s ease-in-out;
 
     &.success {
