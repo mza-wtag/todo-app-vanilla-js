@@ -159,7 +159,7 @@ const editTodo = (taskId) => {
 
     const taskElement = document.getElementById(`task-${task.id}`);
     const titleElement = taskElement.querySelector("h1");
-    const createdAtElement = taskElement.querySelector(".createdAt");
+    const createdAtElement = taskElement.querySelector(".task-card__createdAt");
     const inputElement = document.createElement("input");
     inputElement.type = "text";
     inputElement.value = task.title;
