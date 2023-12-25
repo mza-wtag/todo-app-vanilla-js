@@ -26,7 +26,7 @@ import { mark, pencil, plus, trash } from "./helpers/svgImages.js";
 
 let todos = [];
 let currentPage = 1;
-const tasksPerPage = 3;
+const tasksPerPage = 9;
 let currentFilter = "All";
 let editingId = -1;
 const FILTER_TEXT_ALL = "All";

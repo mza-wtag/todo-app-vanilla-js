@@ -7,14 +7,11 @@ export const showToast = (message, type) => {
     toast.className = `toastMessage toastMessage--${type}`;
     toast.textContent = message;
     toastContainer.appendChild(toast);
-    toast.offsetHeight;
-
     toast.style.opacity = 1;
-
     setTimeout(() => {
         toast.style.opacity = 0;
         setTimeout(() => {
             toast.remove();
-        }, 300);
-    }, 300);
+        }, 3000);
+    }, 3000);
 };
