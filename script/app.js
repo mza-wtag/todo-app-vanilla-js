@@ -11,7 +11,7 @@ import {
 } from "./elements.js";
 
 let todos = [];
-let editingId = -1;
+let isEditing = false; // Change to boolean value
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -116,7 +116,7 @@ taskInputElement.addEventListener("keydown", (event) => {
 
 const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
-    if (todos[index].id === editingId) {
+    if (todos[index].id === isEditing) {
         renderTodos();
     } else if (confirm("Are you sure you want to delete this task?")) {
         todos.splice(index, 1);
@@ -144,7 +144,7 @@ const completeTodo = (taskId) => {
 };
 
 const editTodo = (taskId) => {
-    if (editingId !== -1 && taskId !== editingId) {
+    if (isEditing !== false && taskId !== isEditing) {
         alert(
             "Please save or cancel the current edit before editing another task."
         );
@@ -152,13 +152,7 @@ const editTodo = (taskId) => {
     }
 
     const task = todos.find((task) => task.id === taskId);
-    editingId = task.id;
-
-    if (!task) {
-        alert("Task not found");
-        return;
-    }
-
+    isEditing = task.id;
     const taskElement = document.getElementById(`task-${task.id}`);
     const titleElement = taskElement.querySelector("h1");
     const createdAtElement = taskElement.querySelector(".task-card__createdAt");
@@ -182,16 +176,14 @@ const editTodo = (taskId) => {
             return;
         }
 
-        const updatedTodos = [...todos];
-        const taskToUpdate = updatedTodos.find((task) => task.id === taskId);
-        taskToUpdate.title = updatedTitle;
-        todos = updatedTodos;
-        renderTodos();
-        editButton.innerText = "Edit";
-        editButton.removeEventListener("click", saveHandler);
-        if (editingId === task.id) {
-            editingId = -1;
+        const taskToUpdate = todos.find((task) => task.id === taskId);
+
+        if (taskToUpdate) {
+            taskToUpdate.title = updatedTitle;
             renderTodos();
+            isEditing = false;
+        } else {
+            alert("Task not found");
         }
     };
 
@@ -208,8 +200,8 @@ const editTodo = (taskId) => {
     completeButton.addEventListener("click", completeHandler);
 
     const cancelEditHandler = () => {
-        if (editingId === task.id) {
-            editingId = -1;
+        if (isEditing === task.id) {
+            isEditing = false;
             renderTodos();
         }
     };
