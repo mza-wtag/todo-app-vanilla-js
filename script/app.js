@@ -116,11 +116,6 @@ taskInputElement.addEventListener("keydown", (event) => {
 
 const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
-
-    if (index === -1) {
-        return;
-    }
-
     if (todos[index].id === editingId) {
         renderTodos();
     } else if (confirm("Are you sure you want to delete this task?")) {
@@ -205,19 +200,14 @@ const editTodo = (taskId) => {
     );
     completeButton.addEventListener("click", completeHandler);
 
-    const deleteHandler = () => {
+    const cancelEditHandler = () => {
         if (editingId === task.id) {
             editingId = -1;
             renderTodos();
-        } else {
-            if (confirm("Are you sure you want to delete this task?")) {
-                todos = todos.filter((task) => task.id !== taskId);
-                renderTodos();
-            }
         }
     };
 
     const deleteButton = taskElement.querySelector(".task-card__icon--delete");
-    deleteButton.addEventListener("click", deleteHandler);
+    deleteButton.addEventListener("click", cancelEditHandler);
     inputElement.focus();
 };
