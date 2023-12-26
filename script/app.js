@@ -144,6 +144,13 @@ const completeTodo = (taskId) => {
 };
 
 const editTodo = (taskId) => {
+    if (editingId !== -1 && taskId !== editingId) {
+        alert(
+            "Please save or cancel the current edit before editing another task."
+        );
+        return;
+    }
+
     const task = todos.find((task) => task.id === taskId);
     editingId = task.id;
 
