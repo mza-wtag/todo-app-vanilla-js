@@ -11,7 +11,7 @@ import {
 } from "./elements.js";
 
 let todos = [];
-let isEditing = false; // Change to boolean value
+let isEditing = false;
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -152,7 +152,6 @@ const editTodo = (taskId) => {
     }
 
     const task = todos.find((task) => task.id === taskId);
-    isEditing = task.id;
     const taskElement = document.getElementById(`task-${task.id}`);
     const titleElement = taskElement.querySelector("h1");
     const createdAtElement = taskElement.querySelector(".task-card__createdAt");
