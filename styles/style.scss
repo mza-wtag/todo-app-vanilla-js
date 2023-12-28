@@ -48,6 +48,15 @@
         padding: 0.56rem 0.75rem;
         width: 100%;
     }
+    &__search-icon {
+        fill: $light-color;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            transform: scale(1.1);
+            fill: $primary-color;
+        }
+    }
 }
 
 .task-board {
@@ -131,6 +140,14 @@
         border: none;
         cursor: pointer;
         height: 100%;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        svg {
+            fill: $light-color;
+            &:hover {
+                fill: $primary-color;
+                transform: scale(1.1);
+            }
+        }
     }
     &__input {
         border-radius: 0.31rem;
@@ -145,10 +162,10 @@
         width: 100%;
     }
     &__createdAt {
+        color: $light-color;
         font-size: 0.875rem;
         font-weight: 700;
         line-height: 1rem;
-        color: $light-color;
     }
     &__complete-info {
         background-color: $primary-color;
@@ -165,7 +182,7 @@
 .task-list {
     &__container {
         display: grid;
-        gap: 1rem 2rem;
+        gap: 2rem;
         grid-template-columns: repeat(auto-fill, minmax(23.875rem, 1fr));
         padding-top: 2rem;
     }
@@ -175,8 +192,8 @@
         position: absolute;
         top: 52%;
         img {
-            max-width: 100%;
             margin-left: 15%;
+            max-width: 100%;
         }
     }
 
@@ -184,8 +201,7 @@
         align-items: center;
         display: flex;
         justify-content: center;
-        margin-top: 3.56rem;
-        padding: 1rem;
+        margin-top: 1.5rem;
     }
 }
 
@@ -222,8 +238,8 @@
     .header {
         position: relative;
         &__search-input {
-            position: absolute;
             left: 12%;
+            position: absolute;
             top: 110%;
             width: 80%;
         }
@@ -231,8 +247,8 @@
 
     .task-board {
         &__action-wrapper {
-            flex-direction: column;
             align-items: start;
+            flex-direction: column;
         }
     }
     .task-list {

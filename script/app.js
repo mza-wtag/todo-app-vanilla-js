@@ -22,17 +22,26 @@ import {
     showLoadMoreButton,
     showShowLessButton,
 } from "./helpers/pagination.js";
-import { mark, pencil, plus, trash } from "./helpers/svgImages.js";
+import {
+    mark,
+    pencil,
+    cancel,
+    trash,
+    search,
+    plus,
+} from "./helpers/svgImages.js";
 
 import {
     FILTER_TEXT_ALL,
     FILTER_TEXT_INCOMPLETE,
     FILTER_TEXT_COMPLETE,
 } from "./helpers/constants.js";
+searchIcon.innerHTML = `${search}`;
 
 let todos = [];
 let currentPage = 1;
 const tasksPerPage = 9;
+
 let currentFilter = FILTER_TEXT_ALL;
 
 const toggleSearch = () => {
@@ -76,7 +85,7 @@ toggleButtonToCreateTask.addEventListener("click", () => {
     );
 
     toggleButtonToCreateTask.innerHTML = isTaskCardHidden
-        ? `<img src=${plus} alt="plus"> Create`
+        ? `${plus}Create`
         : "Hide";
 });
 
@@ -98,8 +107,8 @@ const getTodoCard = (task) => {
             <input class="task-card__input" value="${task.title}" />
             <div class="task-card__icon-wrapper">
             <button class="task-card__icon task-card__icon--save btn">Save</button>
-            <button class="task-card__icon hideBtn task-card__icon--complete"><img src=${mark} alt="complete" /></button>
-            <button class="task-card__icon task-card__icon--cancel"><img src=${trash} alt="delete" /></button>
+            <button class="task-card__icon hideBtn task-card__icon--complete">${mark}</button>
+            <button class="task-card__icon task-card__icon--cancel">${cancel}</button>
             </div> 
         `;
 
@@ -124,9 +133,9 @@ const getTodoCard = (task) => {
         }</h1>
             <p class="task-card__createdAt">Created At: ${formatDate()}</p>
             <div class="task-card__icon-wrapper">
-            <button class="task-card__icon hideBtn task-card__icon--complete"><img src=${mark} alt="complete" /></button>
-            <button class="task-card__icon hideBtn task-card__icon--edit"><img src=${pencil} alt="edit" /></button>
-            <button class="task-card__icon task-card__icon--delete"><img src=${trash} alt="delete" /></button>
+            <button class="task-card__icon hideBtn task-card__icon--complete">${mark}</button>
+            <button class="task-card__icon hideBtn task-card__icon--edit">${pencil}</button>
+            <button class="task-card__icon task-card__icon--delete">${trash}</button>
             ${completionInfo}
             </div>   
         `;
@@ -187,7 +196,7 @@ const renderTodos = () => {
         emptyDiv.style.display = "block";
     } else {
         emptyDiv.style.display = "block";
-        emptySms.innerText = "You didn't add any task. Please,add,one.";
+        emptySms.innerText = "You didn't add any task. Please add one.";
     }
 };
 
