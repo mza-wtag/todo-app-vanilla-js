@@ -1,4 +1,4 @@
-import { toastContainer } from "./../../script/elements.js";
+import { toastContainer } from "/script/elements.js";
 
 export const showToast = (message, type) => {
     const existingToasts = document.querySelectorAll(".toast");
