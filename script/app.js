@@ -52,6 +52,13 @@ const getTodoCard = (task) => {
             saveTodoEdit(task.id, element)
         );
 
+        const completeButton = element.querySelector(
+            ".task-card__icon--complete"
+        );
+        completeButton.addEventListener("click", () =>
+            completeTodo(task, element)
+        );
+
         const cancelButton = element.querySelector(".task-card__icon--cancel");
         cancelButton.addEventListener("click", () => cancelTodoEdit(task.id));
     } else {
@@ -146,20 +153,43 @@ const deleteTodo = (taskId) => {
     }
 };
 
-const completeTodo = (t) => {
-    const updatedTodos = todos.map((task) => {
-        if (task.id === t.id && !task.isCompleted) {
+const completeTodo = (task, taskElement) => {
+    const updatedTodos = todos.map((todo) => {
+        if (todo.id === task.id) {
             const completedAt = new Date().getTime();
-            const completedInDays = calculateDays(completedAt, task.createdAt);
+            const completedInDays = calculateDays(completedAt, todo.createdAt);
 
-            return {
-                ...task,
-                isCompleted: true,
-                completedAt,
-                completedInDays,
-            };
+            if (todo.isEditing) {
+                const editedTitle = sanitizeInput(
+                    taskElement
+                        .querySelector(".task-card__edit-input")
+                        .value.trim()
+                );
+
+                if (!editedTitle) {
+                    alert("Edited title is required.");
+                    return todo;
+                }
+
+                return {
+                    ...todo,
+                    isCompleted: true,
+                    completedAt,
+                    completedInDays,
+                    title: editedTitle,
+                    isEditing: false,
+                };
+            } else {
+                return {
+                    ...todo,
+                    isCompleted: true,
+                    completedAt,
+                    completedInDays,
+                    isEditing: false,
+                };
+            }
         }
-        return task;
+        return todo;
     });
     todos = updatedTodos;
     renderTodos();
