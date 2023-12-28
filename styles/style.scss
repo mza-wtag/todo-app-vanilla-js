@@ -67,6 +67,10 @@
     &--hidden {
         display: none;
     }
+    &--completed {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
 }
 
 .task-list {
@@ -76,9 +80,4 @@
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         padding: 1rem;
     }
-}
-
-.completed {
-    text-decoration: line-through;
-    opacity: 0.5;
 }
