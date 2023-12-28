@@ -22,12 +22,12 @@ import {
 let todos = [];
 let currentPage = 1;
 const tasksPerPage = 9;
-let editingId = -1;
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
 
     taskCardElement.classList.toggle(hiddenTaskCardClassname);
+
     const isTaskCardHidden = taskCardElement.classList.contains(
         hiddenTaskCardClassname
     );
@@ -49,28 +49,58 @@ const getTodoCard = (task) => {
     const completionInfo = getCompletionInfo(task);
     element.classList.add("task-card");
     element.setAttribute("id", `task-${task.id}`);
-    element.innerHTML = `
-<h1 class="${task.isCompleted && "completed"}">${task.title}</h1>
-<p class="createdAt" >Created At: ${formatDate()}</p>
-<button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
-<button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
-<button class="task-card__icon task-card__icon--delete">Delete</button>
-${completionInfo}
-`;
-    const editButton = element.querySelector(".task-card__icon--edit");
-    editButton.addEventListener("click", () => editTodo(task.id));
 
-    const completeButton = element.querySelector(".task-card__icon--complete");
-    completeButton.addEventListener("click", () => {
-        if (!task.isCompleted) {
-            completeTodo(task.id);
-        }
-    });
+    if (task.isEditing) {
+        element.innerHTML = `
+            <input class="task-card__edit-input" value="${task.title}" />
+            <button class="task-card__icon task-card__icon--save">Save</button>
+            <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
+            <button class="task-card__icon task-card__icon--cancel">Cancel</button>
+        `;
 
-    const deleteButton = element.querySelector(".task-card__icon--delete");
-    deleteButton.addEventListener("click", () => {
-        deleteTodo(task.id);
-    });
+        const saveButton = element.querySelector(".task-card__icon--save");
+        saveButton.addEventListener("click", () =>
+            saveTodoEdit(task.id, element)
+        );
+
+        const completeButton = element.querySelector(
+            ".task-card__icon--complete"
+        );
+        completeButton.addEventListener("click", () =>
+            completeTodo(task, element)
+        );
+
+        const cancelButton = element.querySelector(".task-card__icon--cancel");
+        cancelButton.addEventListener("click", () => cancelTodoEdit(task.id));
+    } else {
+        element.innerHTML = `
+            <h1 class="${task.isCompleted && "task-card--completed"}">${
+            task.title
+        }</h1>
+            <p class="task-card__createdAt">Created At: ${formatDate()}</p>
+            <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
+            <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
+            <button class="task-card__icon task-card__icon--delete">Delete</button>
+            ${completionInfo}
+        `;
+
+        const editButton = element.querySelector(".task-card__icon--edit");
+        editButton.addEventListener("click", () => editTodo(task.id));
+
+        const completeButton = element.querySelector(
+            ".task-card__icon--complete"
+        );
+        completeButton.addEventListener("click", () => {
+            if (!task.isCompleted) {
+                completeTodo(task);
+            }
+        });
+
+        const deleteButton = element.querySelector(".task-card__icon--delete");
+        deleteButton.addEventListener("click", () => {
+            deleteTodo(task.id);
+        });
+    }
 
     return element;
 };
@@ -110,6 +140,7 @@ const addTodo = (title) => {
         id: generateUniqueId(),
         title,
         isCompleted: false,
+        isEditing: false,
         createdAt: new Date().getTime(),
     };
 
@@ -144,30 +175,60 @@ taskInputElement.addEventListener("keydown", (event) => {
 
 const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
-
-    if (index === -1) {
-        return;
-    }
-
-    if (todos[index].id === editingId) {
-        renderTodos();
-    } else if (confirm("Are you sure you want to delete this task?")) {
+    if (index !== -1) {
         todos.splice(index, 1);
         renderTodos();
     }
 };
 
-const completeTodo = (taskId) => {
+const completeTodo = (task, taskElement) => {
+    const updatedTodos = todos.map((todo) => {
+        if (todo.id === task.id) {
+            const completedAt = new Date().getTime();
+            const completedInDays = calculateDays(completedAt, todo.createdAt);
+
+            if (todo.isEditing) {
+                const editedTitle = sanitizeInput(
+                    taskElement
+                        .querySelector(".task-card__edit-input")
+                        .value.trim()
+                );
+
+                if (!editedTitle) {
+                    alert("Edited title is required.");
+                    return todo;
+                }
+
+                return {
+                    ...todo,
+                    isCompleted: true,
+                    completedAt,
+                    completedInDays,
+                    title: editedTitle,
+                    isEditing: false,
+                };
+            } else {
+                return {
+                    ...todo,
+                    isCompleted: true,
+                    completedAt,
+                    completedInDays,
+                    isEditing: false,
+                };
+            }
+        }
+        return todo;
+    });
+    todos = updatedTodos;
+    renderTodos();
+};
+
+const editTodo = (taskId) => {
     const updatedTodos = todos.map((task) => {
-        if (task.id === taskId && !task.isCompleted) {
+        if (task.id === taskId) {
             return {
                 ...task,
-                isCompleted: true,
-                completedAt: new Date().getTime(),
-                completedInDays: calculateDays(
-                    new Date().getTime(),
-                    task.createdAt
-                ),
+                isEditing: true,
             };
         }
         return task;
@@ -176,78 +237,42 @@ const completeTodo = (taskId) => {
     renderTodos();
 };
 
-const editTodo = (taskId) => {
-    const task = todos.find((task) => task.id === taskId);
-    editingId = task.id;
+const saveTodoEdit = (taskId, taskElement) => {
+    const updatedTodos = todos.map((task) => {
+        if (task.id === taskId) {
+            const editedTitle = sanitizeInput(
+                taskElement.querySelector(".task-card__edit-input").value.trim()
+            );
 
-    if (!task) {
-        alert("Task not found");
-        return;
-    }
-
-    const taskElement = document.getElementById(`task-${task.id}`);
-    const titleElement = taskElement.querySelector("h1");
-    const createdAtElement = taskElement.querySelector(".createdAt");
-    const inputElement = document.createElement("input");
-    inputElement.type = "text";
-    inputElement.value = task.title;
-    if (titleElement) {
-        titleElement.parentNode.replaceChild(inputElement, titleElement);
-    }
-    if (createdAtElement) {
-        createdAtElement.style.display = "none";
-    }
-    const editButton = taskElement.querySelector(".task-card__icon--edit");
-    editButton.innerText = "Save";
-
-    const saveHandler = () => {
-        const updatedTitle = sanitizeInput(inputElement.value.trim());
-
-        if (!updatedTitle) {
-            alert("Task title cannot be empty");
-            return;
-        }
-
-        const updatedTodos = [...todos];
-        const taskToUpdate = updatedTodos.find((task) => task.id === taskId);
-        taskToUpdate.title = updatedTitle;
-        todos = updatedTodos;
-        renderTodos();
-        editButton.innerText = "Edit";
-        editButton.removeEventListener("click", saveHandler);
-        if (editingId === task.id) {
-            editingId = -1;
-            renderTodos();
-        }
-    };
-
-    const completeHandler = () => {
-        saveHandler();
-        completeTodo(task.id);
-    };
-
-    editButton.addEventListener("click", saveHandler);
-
-    const completeButton = taskElement.querySelector(
-        ".task-card__icon--complete"
-    );
-    completeButton.addEventListener("click", completeHandler);
-
-    const deleteHandler = () => {
-        if (editingId === task.id) {
-            editingId = -1;
-            renderTodos();
-        } else {
-            if (confirm("Are you sure you want to delete this task?")) {
-                todos = todos.filter((task) => task.id !== taskId);
-                renderTodos();
+            if (!editedTitle) {
+                alert("Edited title is required.");
+                return task;
             }
-        }
-    };
 
-    const deleteButton = taskElement.querySelector(".task-card__icon--delete");
-    deleteButton.addEventListener("click", deleteHandler);
-    inputElement.focus();
+            return {
+                ...task,
+                title: editedTitle,
+                isEditing: false,
+            };
+        }
+        return task;
+    });
+    todos = updatedTodos;
+    renderTodos();
+};
+
+const cancelTodoEdit = (taskId) => {
+    const updatedTodos = todos.map((task) => {
+        if (task.id === taskId) {
+            return {
+                ...task,
+                isEditing: false,
+            };
+        }
+        return task;
+    });
+    todos = updatedTodos;
+    renderTodos();
 };
 
 renderTodos();
