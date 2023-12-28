@@ -1,4 +1,4 @@
-import { loadMoreButton, showLessButton } from "./../../script/elements.js";
+import { loadMoreButton, showLessButton } from "/script/elements.js";
 
 export const paginate = (items, currentPage, tasksPerPage) => {
     const startIndex = 0;

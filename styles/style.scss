@@ -119,6 +119,46 @@
         color: $success-color;
         opacity: 0.5;
     }
+
+    &__icon-wrapper {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+    }
+    &__icon {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        height: 100%;
+    }
+    &__input {
+        border-radius: 0.31rem;
+        border: 0.03rem solid #dde2ff;
+        border: 0.03rem solid $border-color;
+        font-size: 1rem;
+        font-weight: 500;
+        height: 100%;
+        min-height: 5rem;
+        outline: none;
+        padding: 0.31rem 0.563rem;
+        width: 100%;
+    }
+    &__createdAt {
+        font-size: 0.875rem;
+        font-weight: 700;
+        line-height: 1rem;
+        color: $light-color;
+    }
+    &__complete-info {
+        background-color: $primary-color;
+        border-radius: 0.31rem;
+        color: $color-white;
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 0.875rem;
+        margin-left: auto;
+        padding: 0.31rem 0.75rem;
+    }
 }
 
 .task-list {
@@ -147,12 +187,6 @@
         padding: 1rem;
     }
 }
-
-// .completed {
-//     color: $success-color;
-//     opacity: 0.5;
-//     text-decoration: line-through;
-// }
 
 .toastMessage {
     border-radius: 0.3125rem;
