@@ -48,7 +48,9 @@ const getTodoCard = (task) => {
         `;
 
         const saveButton = element.querySelector(".task-card__icon--save");
-        saveButton.addEventListener("click", () => saveTodoEdit(task.id));
+        saveButton.addEventListener("click", () =>
+            saveTodoEdit(task.id, element)
+        );
 
         const cancelButton = element.querySelector(".task-card__icon--cancel");
         cancelButton.addEventListener("click", () => cancelTodoEdit(task.id));
@@ -147,14 +149,14 @@ const deleteTodo = (taskId) => {
 const completeTodo = (t) => {
     const updatedTodos = todos.map((task) => {
         if (task.id === t.id && !task.isCompleted) {
+            const completedAt = new Date().getTime();
+            const completedInDays = calculateDays(completedAt, task.createdAt);
+
             return {
                 ...task,
                 isCompleted: true,
-                completedAt: new Date().getTime(),
-                completedInDays: calculateDays(
-                    new Date().getTime(),
-                    task.createdAt
-                ),
+                completedAt,
+                completedInDays,
             };
         }
         return task;
@@ -177,11 +179,11 @@ const editTodo = (taskId) => {
     renderTodos();
 };
 
-const saveTodoEdit = (taskId) => {
+const saveTodoEdit = (taskId, taskElement) => {
     const updatedTodos = todos.map((task) => {
         if (task.id === taskId) {
             const editedTitle = sanitizeInput(
-                document.querySelector(".task-card__edit-input").value.trim()
+                taskElement.querySelector(".task-card__edit-input").value.trim()
             );
 
             if (!editedTitle) {
