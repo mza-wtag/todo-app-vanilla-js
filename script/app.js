@@ -97,7 +97,7 @@ const getTodoCard = (task) => {
         element.innerHTML = `
             <input class="task-card__edit-input" value="${task.title}" />
             <button class="task-card__icon task-card__icon--save">Save</button>
-            <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
+            <button class="task-card__icon hideBtn task-card__icon--complete"></button>
             <button class="task-card__icon task-card__icon--cancel">Cancel</button>
         `;
 
@@ -282,10 +282,11 @@ const completeTodo = (task, taskElement) => {
                 };
             }
         }
-        showToast("Task completed successfully", "success");
+
         return todo;
     });
     todos = updatedTodos;
+
     renderTodos();
 };
 
