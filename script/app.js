@@ -349,13 +349,13 @@ const cancelTodoEdit = (taskId) => {
 filterButtons.forEach((button) => {
     const isAllButton = button.textContent === "All";
     if (isAllButton) {
-        button.classList.add("active");
+        button.classList.add("btn--active");
     }
     button.addEventListener("click", () => {
-        button.classList.add("active");
+        button.classList.add("btn--active");
         filterButtons.forEach((otherButton) => {
             if (otherButton !== button) {
-                otherButton.classList.remove("active");
+                otherButton.classList.remove("btn--active");
             }
         });
         currentFilter = button.textContent;

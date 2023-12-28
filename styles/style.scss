@@ -71,9 +71,6 @@
         padding: 2rem 0rem;
         margin-top: 1rem;
     }
-    .active {
-        color: $primary-color;
-    }
 }
 
 .btn {
@@ -98,6 +95,9 @@
         background-color: $color-black;
         color: $color-white;
         display: none;
+    }
+    &--active {
+        color: $primary-color;
     }
 }
 
