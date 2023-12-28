@@ -246,6 +246,8 @@ const completeTodo = (task, taskElement) => {
                 if (!editedTitle) {
                     showToast("Title is required for complete", "error");
                     return todo;
+                } else {
+                    showToast("Task completed successfully", "success");
                 }
 
                 return {
@@ -266,10 +268,11 @@ const completeTodo = (task, taskElement) => {
                 };
             }
         }
+
         return todo;
     });
     todos = updatedTodos;
-    showToast("Task completed successfully", "success");
+
     renderTodos();
 };
 
