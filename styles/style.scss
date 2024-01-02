@@ -118,8 +118,14 @@
     flex-direction: column;
     gap: 1.5rem;
     justify-content: space-between;
-    overflow: hidden;
     padding: 1rem;
+
+    &__title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
 
     &--hidden {
         display: none;
@@ -231,6 +237,10 @@
 
     &--danger {
         background-color: $danger-color;
+    }
+
+    &--info {
+        background-color: $primary-color;
     }
 }
 

@@ -128,9 +128,9 @@ const getTodoCard = (task) => {
         cancelButton.addEventListener("click", () => cancelTodoEdit(task.id));
     } else {
         element.innerHTML = `
-            <h1 class="${task.isCompleted && "task-card--completed"}">${
-            task.title
-        }</h1>
+            <h1 class="${
+                task.isCompleted && "task-card--completed"
+            } task-card__title">${task.title}</h1>
             <p class="task-card__createdAt">Created At: ${formatDate()}</p>
             <div class="task-card__icon-wrapper">
             <button class="task-card__icon hideBtn task-card__icon--complete">${mark}</button>
@@ -251,9 +251,16 @@ taskInputElement.addEventListener("keydown", (event) => {
 const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
     if (index !== -1) {
-        todos.splice(index, 1);
-        showToast("Task deleted successfully", "danger");
-        renderTodos();
+        const isConfirmed = window.confirm(
+            "Are you sure you want to delete this task?"
+        );
+        if (isConfirmed) {
+            todos.splice(index, 1);
+            showToast("Task deleted successfully", "danger");
+            renderTodos();
+        } else {
+            showToast("Deletion canceled", "info");
+        }
     }
 };
 
@@ -293,6 +300,7 @@ const completeTodo = (task, taskElement) => {
                 };
             }
         }
+        showToast("Task completed successfully", "success");
 
         return todo;
     });
