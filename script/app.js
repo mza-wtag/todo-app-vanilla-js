@@ -11,6 +11,8 @@ import {
     loadMoreButton,
     showLessButton,
     filterButtons,
+    searchIcon,
+    searchInput,
 } from "./elements.js";
 
 import {
@@ -30,6 +32,37 @@ let todos = [];
 let currentPage = 1;
 const tasksPerPage = 9;
 let currentFilter = FILTER_TEXT_ALL;
+
+const toggleSearch = () => {
+    searchInput.style.display =
+        searchInput.style.display === "none" || searchInput.style.display === ""
+            ? "block"
+            : "none";
+};
+
+searchIcon.addEventListener("click", () => {
+    toggleSearch();
+});
+
+const debounce = (func, delay) => {
+    let timeoutId;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+};
+
+searchInput.addEventListener(
+    "input",
+    debounce(() => {
+        currentPage = 1;
+        renderTodos();
+    }, 300)
+);
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -297,13 +330,25 @@ filterButtons.forEach((button) => {
 });
 
 const filterTasks = () => {
+    const searchTerm = sanitizeInput(searchInput.value.trim().toLowerCase());
+
     switch (currentFilter) {
         case FILTER_TEXT_ALL:
-            return todos;
+            return todos.filter((task) =>
+                task.title.toLowerCase().includes(searchTerm)
+            );
         case FILTER_TEXT_INCOMPLETE:
-            return todos.filter((task) => !task.isCompleted);
+            return todos.filter(
+                (task) =>
+                    !task.isCompleted &&
+                    task.title.toLowerCase().includes(searchTerm)
+            );
         case FILTER_TEXT_COMPLETE:
-            return todos.filter((task) => task.isCompleted);
+            return todos.filter(
+                (task) =>
+                    task.isCompleted &&
+                    task.title.toLowerCase().includes(searchTerm)
+            );
         default:
             return todos;
     }

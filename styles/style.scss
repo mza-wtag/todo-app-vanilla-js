@@ -18,6 +18,15 @@
         align-items: center;
         display: flex;
     }
+
+    &__search-wrapper {
+        display: flex;
+        gap: 1rem;
+    }
+
+    &__search-input {
+        display: none;
+    }
 }
 
 .task-board {
@@ -32,6 +41,7 @@
 .btn {
     border-radius: 5px;
     border: 1px solid $border-color;
+    cursor: pointer;
     padding: 0.5rem;
     &--primary {
         background-color: $primary-color;
