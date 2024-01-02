@@ -3,119 +3,276 @@
 @import "layout";
 
 .header {
+    background-color: $color-white;
+    border-bottom: 0.06rem solid $border-color;
+    padding: 1rem 2rem;
+    width: 100%;
     &__container {
-        padding: 2rem 1rem;
+        display: flex;
+        justify-content: center;
     }
 
     &__nav {
         align-items: center;
-        background: $secondary-color;
         display: flex;
         justify-content: space-between;
+        width: 80%;
     }
 
     &__logo {
+        justify-content: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+    &__logo-text {
+        color: $primary-color;
+        font-size: 2.1rem;
+        font-weight: 700;
+    }
+    &__search-wrapper {
         align-items: center;
         display: flex;
-    }
-
-    &__search-wrapper {
-        display: flex;
+        flex-basis: 50%;
         gap: 1rem;
+        justify-content: end;
     }
 
     &__search-input {
+        border-radius: 0.31rem;
+        border: 0.125rem solid $border-color;
         display: none;
+        font-size: 1rem;
+        font-weight: 500;
+        outline: none;
+        padding: 0.56rem 0.75rem;
+        width: 100%;
+    }
+    &__search-icon {
+        fill: $light-color;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            transform: scale(1.1);
+            fill: $primary-color;
+        }
     }
 }
 
 .task-board {
-    background-color: $secondary-color;
+    margin: 0 auto;
+    width: 77%;
     &__action-wrapper {
         align-items: center;
         display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
         justify-content: space-between;
-        padding: 1rem;
+    }
+    &__filter-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+    }
+    &__heading {
+        font-size: 1.87rem;
+        font-weight: 700;
+        padding: 2rem 0rem;
+        margin-top: 1rem;
     }
 }
+
 .btn {
-    border-radius: 5px;
-    border: 1px solid $border-color;
+    background-color: $secondary-color;
+    border-radius: 0.31rem;
+    border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: 0.06rem solid $border-color;
+    padding: 0.56rem 1.25rem;
+    text-transform: capitalize;
     &--primary {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
         background-color: $primary-color;
         color: $color-white;
     }
-    &__filter-buttons {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        padding-top: 2rem;
+    &--loadMoreButton,
+    &--showLessButton {
+        background-color: $color-black;
+        color: $color-white;
+        display: none;
+    }
+    &--active {
+        color: $primary-color;
     }
 }
 
 .task-card {
     background-color: $color-white;
-    border-radius: 5px;
-    border: 1px solid $border-color;
-    height: auto;
-    margin-bottom: 1rem;
-    padding: 4rem 1rem;
-    text-align: center;
+    border-radius: 0.3125rem;
+    border: 0.0625rem solid $border-color;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: space-between;
+    padding: 1rem;
+
+    &__title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
 
     &--hidden {
         display: none;
     }
     &--completed {
         text-decoration: line-through;
+        color: $success-color;
         opacity: 0.5;
+    }
+
+    &__icon-wrapper {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+    }
+    &__icon {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        height: 100%;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        svg {
+            fill: $light-color;
+            &:hover {
+                fill: $primary-color;
+                transform: scale(1.1);
+            }
+        }
+    }
+    &__input {
+        border-radius: 0.31rem;
+        border: 0.03rem solid #dde2ff;
+        border: 0.03rem solid $border-color;
+        font-size: 1rem;
+        font-weight: 500;
+        height: 100%;
+        min-height: 5rem;
+        outline: none;
+        padding: 0.31rem 0.563rem;
+        width: 100%;
+    }
+    &__createdAt {
+        color: $light-color;
+        font-size: 0.875rem;
+        font-weight: 700;
+        line-height: 1rem;
+    }
+    &__complete-info {
+        background-color: $primary-color;
+        border-radius: 0.31rem;
+        color: $color-white;
+        font-size: 0.75rem;
+        font-weight: 700;
+        line-height: 0.875rem;
+        margin-left: auto;
+        padding: 0.31rem 0.75rem;
     }
 }
 
 .task-list {
     &__container {
         display: grid;
-        gap: 1rem 2rem;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        padding: 1rem;
+        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(23.875rem, 1fr));
+        padding-top: 2rem;
+    }
+
+    &__empty {
+        left: 37%;
+        position: absolute;
+        top: 52%;
+        img {
+            margin-left: 15%;
+            max-width: 100%;
+        }
+    }
+
+    &__paginate-buttons {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5rem;
     }
 }
 
-.completed {
-    text-decoration: line-through;
-    opacity: 0.5;
-}
-
-.toast-container {
-    height: 55px;
-    left: 900px;
-    max-width: 390px;
-    position: fixed;
-    top: 10px;
-    z-index: 1000;
-}
-
-.toast {
-    border-radius: 5px;
-    color: #fff;
+.toastMessage {
+    border-radius: 0.3125rem;
+    color: $color-white;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 10px;
-    opacity: 0;
-    padding: 12px 20px;
-    transition: opacity 0.3s ease-in-out;
+    height: 3.4375rem;
+    left: 40%;
+    max-width: 24.375rem;
+    padding: 0.75rem 1.25rem;
+    position: fixed;
+    top: 0.625rem;
+    transition: 0.3s ease-in-out;
+    z-index: 1000;
 
-    &.success {
+    &--success {
         background-color: $success-color;
     }
 
-    &.error {
+    &--error {
         background-color: $error-color;
+        color: $color-black;
     }
 
-    &.danger {
+    &--danger {
         background-color: $danger-color;
+    }
+
+    &--info {
+        background-color: $primary-color;
+    }
+}
+
+@media (max-width: 640px) {
+    .header {
+        position: relative;
+        &__search-input {
+            left: 12%;
+            position: absolute;
+            top: 110%;
+            width: 80%;
+        }
+    }
+
+    .task-board {
+        &__action-wrapper {
+            align-items: start;
+            flex-direction: column;
+        }
+    }
+    .task-list {
+        &__container {
+            grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        }
+        &__empty {
+            display: flex;
+            left: 15%;
+            position: absolute;
+            top: 74%;
+            &-message {
+                font-size: 100%;
+            }
+        }
     }
 }

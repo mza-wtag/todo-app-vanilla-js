@@ -12,9 +12,9 @@
                 <nav class="header__nav">
                     <div class="header__logo">
                         <div class="header__logo-img">
-                            <img src="/images/leaf-1.png" alt="leaf" />
+                            <img src="/images/svg/leaf.svg" alt="leaf" />
                         </div>
-                        <div class="header__logo-text">ToDos</div>
+                        <div class="header__logo-text">Todos</div>
                     </div>
                     <div class="header__search-wrapper">
                         <input
@@ -22,17 +22,16 @@
                             type="text"
                             placeholder="search..."
                         />
-                        <button class="btn searchIcon">search</button>
+                        <div class="header__search-icon"></div>
                     </div>
                 </nav>
             </div>
         </header>
-
         <section class="task-board">
             <h1 class="task-board__heading">Add Tasks</h1>
             <div class="task-board__action-wrapper">
                 <button id="create-task" class="btn btn--primary">
-                    + Create Task
+                    <img src="/images/svg/plus.svg" alt="" /> Create
                 </button>
                 <div class="task-board__filter-buttons">
                     <button class="btn">All</button>
@@ -46,17 +45,25 @@
                         id="task-card-create"
                         class="task-card task-card--hidden"
                     >
-                        <input type="text" class="task-card__input" />
-                        <button id="add-task-button" class="btn">
-                            Add Task
-                        </button>
+                        <input class="task-card__input" />
+                        <div>
+                            <button id="add-task-button" class="btn">
+                                Add Task
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <button class="btn btn--loadMoreButton">Load More</button>
-                <button class="btn btn--showLessButton">Show Less</button>
+                <div class="task-list__empty">
+                    <img src="/images/svg/files.svg" alt="task empty" />
+                    <h1 class="task-list__empty-message"></h1>
+                </div>
+                <div class="task-list__paginate-buttons">
+                    <button class="btn btn--loadMoreButton">Load More</button>
+                    <button class="btn btn--showLessButton">Show Less</button>
+                </div>
             </div>
-            <div class="toast-container"></div>
         </section>
+        <div class="toast-container"></div>
         <script src="/script/app.js" type="module"></script>
     </body>
 </html>

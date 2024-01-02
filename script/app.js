@@ -22,16 +22,26 @@ import {
     showLoadMoreButton,
     showShowLessButton,
 } from "./helpers/pagination.js";
+import {
+    mark,
+    pencil,
+    cancel,
+    trash,
+    search,
+    plus,
+} from "./helpers/svgImages.js";
 
 import {
     FILTER_TEXT_ALL,
     FILTER_TEXT_INCOMPLETE,
     FILTER_TEXT_COMPLETE,
 } from "./helpers/constants.js";
+searchIcon.innerHTML = `${search}`;
 
 let todos = [];
 let currentPage = 1;
 const tasksPerPage = 9;
+
 let currentFilter = FILTER_TEXT_ALL;
 
 const toggleSearch = () => {
@@ -74,16 +84,16 @@ toggleButtonToCreateTask.addEventListener("click", () => {
         hiddenTaskCardClassname
     );
 
-    toggleButtonToCreateTask.innerText = isTaskCardHidden
-        ? "+ Create task"
-        : "Hide task";
+    toggleButtonToCreateTask.innerHTML = isTaskCardHidden
+        ? `${plus}Create`
+        : "Hide";
 });
 
 const getCompletionInfo = (task) =>
     task.isCompleted
-        ? `<p>Completed In: ${task.completedInDays} ${
-              task.completedInDays < 2 ? "day" : "days"
-          }</p>`
+        ? `<span class="task-card__complete-info" >Completed In: ${
+              task.completedInDays
+          } ${task.completedInDays < 2 ? "day" : "days"}</span>`
         : "";
 
 const getTodoCard = (task) => {
@@ -94,10 +104,12 @@ const getTodoCard = (task) => {
 
     if (task.isEditing) {
         element.innerHTML = `
-            <input class="task-card__edit-input" value="${task.title}" />
-            <button class="task-card__icon task-card__icon--save">Save</button>
-            <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
-            <button class="task-card__icon task-card__icon--cancel">Cancel</button>
+            <input class="task-card__input" value="${task.title}" />
+            <div class="task-card__icon-wrapper">
+            <button class="task-card__icon task-card__icon--save btn">Save</button>
+            <button class="task-card__icon hideBtn task-card__icon--complete">${mark}</button>
+            <button class="task-card__icon task-card__icon--cancel">${cancel}</button>
+            </div> 
         `;
 
         const saveButton = element.querySelector(".task-card__icon--save");
@@ -116,14 +128,16 @@ const getTodoCard = (task) => {
         cancelButton.addEventListener("click", () => cancelTodoEdit(task.id));
     } else {
         element.innerHTML = `
-            <h1 class="${task.isCompleted && "task-card--completed"}">${
-            task.title
-        }</h1>
+            <h1 class="${
+                task.isCompleted && "task-card--completed"
+            } task-card__title">${task.title}</h1>
             <p class="task-card__createdAt">Created At: ${formatDate()}</p>
-            <button class="task-card__icon hideBtn task-card__icon--complete">Complete</button>
-            <button class="task-card__icon hideBtn task-card__icon--edit">Edit</button>
-            <button class="task-card__icon task-card__icon--delete">Delete</button>
+            <div class="task-card__icon-wrapper">
+            <button class="task-card__icon hideBtn task-card__icon--complete">${mark}</button>
+            <button class="task-card__icon hideBtn task-card__icon--edit">${pencil}</button>
+            <button class="task-card__icon task-card__icon--delete">${trash}</button>
             ${completionInfo}
+            </div>   
         `;
 
         const editButton = element.querySelector(".task-card__icon--edit");
@@ -170,6 +184,20 @@ const renderTodos = () => {
     );
     showLoadMoreButton(morePages);
     showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
+    const emptyDiv = document.querySelector(".task-list__empty");
+    const emptySms = document.querySelector(".task-list__empty-message");
+    if (visibleTodos.length > 0) {
+        emptyDiv.style.display = "none";
+    } else if (
+        visibleTodos.length === 0 &&
+        currentFilter === FILTER_TEXT_COMPLETE
+    ) {
+        emptySms.innerText = "You didn't complete any task.";
+        emptyDiv.style.display = "block";
+    } else {
+        emptyDiv.style.display = "block";
+        emptySms.innerText = "You didn't add any task. Please add one.";
+    }
 };
 
 loadMoreButton.addEventListener("click", () => {
@@ -200,9 +228,8 @@ const addTodo = (title) => {
 
 const validateAndAddTodo = () => {
     const title = sanitizeInput(taskInputElement.value.trim());
-
     if (!title) {
-        alert("Task title is required.");
+        showToast("Task title is required.", "error");
         return;
     }
 
@@ -224,9 +251,16 @@ taskInputElement.addEventListener("keydown", (event) => {
 const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
     if (index !== -1) {
-        todos.splice(index, 1);
-        showToast("Task deleted successfully", "danger");
-        renderTodos();
+        const isConfirmed = window.confirm(
+            "Are you sure you want to delete this task?"
+        );
+        if (isConfirmed) {
+            todos.splice(index, 1);
+            showToast("Task deleted successfully", "danger");
+            renderTodos();
+        } else {
+            showToast("Deletion canceled", "info");
+        }
     }
 };
 
@@ -238,9 +272,7 @@ const completeTodo = (task, taskElement) => {
 
             if (todo.isEditing) {
                 const editedTitle = sanitizeInput(
-                    taskElement
-                        .querySelector(".task-card__edit-input")
-                        .value.trim()
+                    taskElement.querySelector(".task-card__input").value.trim()
                 );
 
                 if (!editedTitle) {
@@ -268,6 +300,7 @@ const completeTodo = (task, taskElement) => {
                 };
             }
         }
+        showToast("Task completed successfully", "success");
 
         return todo;
     });
@@ -294,7 +327,7 @@ const saveTodoEdit = (taskId, taskElement) => {
     const updatedTodos = todos.map((task) => {
         if (task.id === taskId) {
             const editedTitle = sanitizeInput(
-                taskElement.querySelector(".task-card__edit-input").value.trim()
+                taskElement.querySelector(".task-card__input").value.trim()
             );
 
             if (!editedTitle) {
@@ -331,7 +364,17 @@ const cancelTodoEdit = (taskId) => {
 };
 
 filterButtons.forEach((button) => {
+    const isAllButton = button.textContent === "All";
+    if (isAllButton) {
+        button.classList.add("btn--active");
+    }
     button.addEventListener("click", () => {
+        button.classList.add("btn--active");
+        filterButtons.forEach((otherButton) => {
+            if (otherButton !== button) {
+                otherButton.classList.remove("btn--active");
+            }
+        });
         currentFilter = button.textContent;
         currentPage = 1;
         renderTodos();
