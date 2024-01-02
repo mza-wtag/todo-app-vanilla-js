@@ -2,6 +2,7 @@ import { sanitizeInput } from "./helpers/sanitizeInput.js";
 import { generateUniqueId } from "./helpers/generateUniqueId.js";
 import { formatDate } from "./helpers/formatDate.js";
 import { calculateDays } from "./helpers/calculateDays.js";
+import { showToast } from "./helpers/toast.js";
 import {
     toggleButtonToCreateTask,
     taskCardElement,
@@ -191,6 +192,7 @@ const addTodo = (title) => {
     };
 
     todos.unshift(newTask);
+    showToast("Task added successfully", "success");
     renderTodos();
     taskInputElement.value = "";
     taskInputElement.focus();
@@ -223,6 +225,7 @@ const deleteTodo = (taskId) => {
     const index = todos.findIndex((task) => task.id === taskId);
     if (index !== -1) {
         todos.splice(index, 1);
+        showToast("Task deleted successfully", "danger");
         renderTodos();
     }
 };
@@ -241,8 +244,10 @@ const completeTodo = (task, taskElement) => {
                 );
 
                 if (!editedTitle) {
-                    alert("Edited title is required.");
+                    showToast("Title is required for complete", "error");
                     return todo;
+                } else {
+                    showToast("Task completed successfully", "success");
                 }
 
                 return {
@@ -263,9 +268,11 @@ const completeTodo = (task, taskElement) => {
                 };
             }
         }
+
         return todo;
     });
     todos = updatedTodos;
+
     renderTodos();
 };
 
@@ -291,8 +298,10 @@ const saveTodoEdit = (taskId, taskElement) => {
             );
 
             if (!editedTitle) {
-                alert("Edited title is required.");
+                showToast("Edited title is required.", "error");
                 return task;
+            } else {
+                showToast("Task Edited successfully", "success");
             }
 
             return {

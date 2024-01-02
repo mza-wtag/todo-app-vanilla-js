@@ -13,3 +13,4 @@ export const filterButtons = document.querySelectorAll(
 );
 export const searchIcon = document.querySelector(".searchIcon");
 export const searchInput = document.querySelector(".header__search-input");
+export const toastContainer = document.querySelector(".toast-container");
