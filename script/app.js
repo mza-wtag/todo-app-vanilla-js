@@ -8,9 +8,20 @@ import {
     addNewTaskButtonElement,
     taskInputElement,
     taskListContainerElement,
+    loadMoreButton,
+    showLessButton,
 } from "./elements.js";
 
+import {
+    paginate,
+    hasMorePages,
+    showLoadMoreButton,
+    showShowLessButton,
+} from "./helpers/pagination.js";
+
 let todos = [];
+let currentPage = 1;
+const tasksPerPage = 9;
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -96,11 +107,11 @@ const getTodoCard = (task) => {
 
 const renderTodos = () => {
     taskListContainerElement.innerHTML = "";
-
     taskListContainerElement.appendChild(taskCardElement);
 
-    const reversedTodos = todos.slice().reverse();
-    reversedTodos.forEach((task) => {
+    const visibleTodos = paginate(todos, currentPage, tasksPerPage);
+
+    visibleTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
         taskListContainerElement.appendChild(taskCard);
 
@@ -108,7 +119,21 @@ const renderTodos = () => {
         task.isCompleted &&
             commonBtns.forEach((btn) => (btn.style.display = "none"));
     });
+
+    const morePages = hasMorePages(todos.length, currentPage, tasksPerPage);
+    showLoadMoreButton(morePages);
+    showShowLessButton(currentPage, tasksPerPage, todos.length);
 };
+
+loadMoreButton.addEventListener("click", () => {
+    currentPage++;
+    renderTodos();
+});
+
+showLessButton.addEventListener("click", () => {
+    currentPage = 1;
+    renderTodos();
+});
 
 const addTodo = (title) => {
     const newTask = {
@@ -119,7 +144,7 @@ const addTodo = (title) => {
         createdAt: new Date().getTime(),
     };
 
-    todos.push(newTask);
+    todos.unshift(newTask);
     renderTodos();
     taskInputElement.value = "";
     taskInputElement.focus();
@@ -136,7 +161,10 @@ const validateAndAddTodo = () => {
     addTodo(title);
 };
 
-addNewTaskButtonElement.addEventListener("click", validateAndAddTodo);
+addNewTaskButtonElement.addEventListener("click", () => {
+    validateAndAddTodo();
+    renderTodos();
+});
 
 taskInputElement.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
@@ -246,3 +274,5 @@ const cancelTodoEdit = (taskId) => {
     todos = updatedTodos;
     renderTodos();
 };
+
+renderTodos();

@@ -6,3 +6,5 @@ export const addNewTaskButtonElement =
 export const taskListContainerElement = document.querySelector(
     ".task-list__container"
 );
+export const loadMoreButton = document.querySelector(".btn--loadMoreButton");
+export const showLessButton = document.querySelector(".btn--showLessButton");
