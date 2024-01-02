@@ -10,6 +10,7 @@ import {
     taskListContainerElement,
     loadMoreButton,
     showLessButton,
+    filterButtons,
 } from "./elements.js";
 
 import {
@@ -19,9 +20,16 @@ import {
     showShowLessButton,
 } from "./helpers/pagination.js";
 
+import {
+    FILTER_TEXT_ALL,
+    FILTER_TEXT_INCOMPLETE,
+    FILTER_TEXT_COMPLETE,
+} from "./helpers/constants.js";
+
 let todos = [];
 let currentPage = 1;
 const tasksPerPage = 9;
+let currentFilter = FILTER_TEXT_ALL;
 
 toggleButtonToCreateTask.addEventListener("click", () => {
     const hiddenTaskCardClassname = "task-card--hidden";
@@ -106,10 +114,11 @@ const getTodoCard = (task) => {
 };
 
 const renderTodos = () => {
+    const filteredTodos = filterTasks();
     taskListContainerElement.innerHTML = "";
     taskListContainerElement.appendChild(taskCardElement);
 
-    const visibleTodos = paginate(todos, currentPage, tasksPerPage);
+    const visibleTodos = paginate(filteredTodos, currentPage, tasksPerPage);
 
     visibleTodos.forEach((task) => {
         const taskCard = getTodoCard(task);
@@ -120,9 +129,13 @@ const renderTodos = () => {
             commonBtns.forEach((btn) => (btn.style.display = "none"));
     });
 
-    const morePages = hasMorePages(todos.length, currentPage, tasksPerPage);
+    const morePages = hasMorePages(
+        filteredTodos.length,
+        currentPage,
+        tasksPerPage
+    );
     showLoadMoreButton(morePages);
-    showShowLessButton(currentPage, tasksPerPage, todos.length);
+    showShowLessButton(currentPage, tasksPerPage, filteredTodos.length);
 };
 
 loadMoreButton.addEventListener("click", () => {
@@ -273,6 +286,27 @@ const cancelTodoEdit = (taskId) => {
     });
     todos = updatedTodos;
     renderTodos();
+};
+
+filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        currentFilter = button.textContent;
+        currentPage = 1;
+        renderTodos();
+    });
+});
+
+const filterTasks = () => {
+    switch (currentFilter) {
+        case FILTER_TEXT_ALL:
+            return todos;
+        case FILTER_TEXT_INCOMPLETE:
+            return todos.filter((task) => !task.isCompleted);
+        case FILTER_TEXT_COMPLETE:
+            return todos.filter((task) => task.isCompleted);
+        default:
+            return todos;
+    }
 };
 
 renderTodos();
